@@ -50,7 +50,7 @@ class BytesInputWrapper extends BytesInput
         #if flash9
             return b.bytesAvailable;
         #else
-            return len - pos;
+            return b.length - pos;
         #end
     }
     
