@@ -20,38 +20,35 @@
  * THE SOFTWARE.
  */
 
-package hxpixel.bytes;
+package hxpixel.images.pnm;
 
-import haxe.io.Bytes;
-import haxe.io.BytesInput;
+import hxpixel.images.color.Rgb;
 
-enum Endian {
-    BigEndian;
-    LittleEndian;
-}
- 
-
-class BytesInputWrapper extends BytesInput
+class PpmEncoder
 {
-    
-    public function new( b : Bytes, ?endian : Endian, ?pos : Int, ?len : Int ) 
+
+    public static function encodeP3(width:Int, height:Int, maxval:Int, imageData:Array<Int>) : String
     {
-        super( b, pos, len );
+        var ppm = "P3\n";
+        ppm += width + " " + height + "\n";
+        ppm += maxval + "\n";
         
-        if(endian != null) {
-            switch(endian) {
-                case BigEndian: bigEndian = true;
-                case LittleEndian: bigEndian = false;
+        // No line should be longer than 70 characters.
+        var pixelLen = Std.string(maxval).length * 3 + 3;
+        var linePixelNum = Std.int(70 / pixelLen);
+        
+        for (i in 0 ... imageData.length) {
+            var rgb:Rgb = imageData[i];
+            ppm += rgb.red + " " + rgb.green + " " + rgb.blue;
+            
+            if ((i+1) % linePixelNum != 0) {
+                ppm += " ";
+            } else {
+                ppm += "\n";
             }
         }
-    }
-    
-    public function getAbailable() {
-        #if flash9
-            return b.bytesAvailable;
-        #else
-            return len;
-        #end
+        
+        return ppm;
     }
     
 }

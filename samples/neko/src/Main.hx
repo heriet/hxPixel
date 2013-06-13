@@ -20,38 +20,35 @@
  * THE SOFTWARE.
  */
 
-package hxpixel.bytes;
+package ;
 
 import haxe.io.Bytes;
-import haxe.io.BytesInput;
+import neko.Lib;
+import sys.io.File;
 
-enum Endian {
-    BigEndian;
-    LittleEndian;
-}
- 
+import hxpixel.images.color.Rgb;
+import hxpixel.images.gif.GifDecoder;
+import hxpixel.images.png.PngDecoder;
+import hxpixel.images.pnm.PpmEncoder;
 
-class BytesInputWrapper extends BytesInput
+class Main 
 {
-    
-    public function new( b : Bytes, ?endian : Endian, ?pos : Int, ?len : Int ) 
-    {
-        super( b, pos, len );
+	
+	static function main() 
+	{   
+        var pngBytes = haxe.Resource.getBytes("16x16_16colors_001_png");
+        var ppm = convertPngToPPM(pngBytes);
         
-        if(endian != null) {
-            switch(endian) {
-                case BigEndian: bigEndian = true;
-                case LittleEndian: bigEndian = false;
-            }
-        }
+        neko.Lib.print(ppm);
+        
+        File.saveContent("output.ppm", ppm);
+	}
+	
+    static function convertPngToPPM(bytes : Bytes)
+    {
+        var pnginfo = PngDecoder.decode(bytes);        
+        var rgbaImageData = pnginfo.getRgbaImageData();
+        
+        return PpmEncoder.encodeP3(pnginfo.width, pnginfo.height, 255, rgbaImageData);
     }
-    
-    public function getAbailable() {
-        #if flash9
-            return b.bytesAvailable;
-        #else
-            return len;
-        #end
-    }
-    
 }

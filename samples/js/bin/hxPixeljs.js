@@ -1572,7 +1572,7 @@ hxpixel.bytes.BytesInputWrapper.__name__ = true;
 hxpixel.bytes.BytesInputWrapper.__super__ = haxe.io.BytesInput;
 hxpixel.bytes.BytesInputWrapper.prototype = $extend(haxe.io.BytesInput.prototype,{
 	getAbailable: function() {
-		return this.b.length - this.pos;
+		return this.len;
 	}
 	,__class__: hxpixel.bytes.BytesInputWrapper
 });
