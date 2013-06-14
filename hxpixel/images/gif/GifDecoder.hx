@@ -179,12 +179,10 @@ class GifDecoder
     static public function readImageData(input:Input, gifFrameInfo:GifFrameInfo) 
     {
         var lzwMinimumCodeSize = input.readByte();
-        trace("lzwMinimumCodeSize: " + lzwMinimumCodeSize);
         
         var joinOutput = new BytesOutput();
         while (true) {
             var blockSize = input.readByte();
-            trace("blockSize: " + blockSize);
             if (blockSize == 0) {
                 break;
             }

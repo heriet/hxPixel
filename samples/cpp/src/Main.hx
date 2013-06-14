@@ -20,13 +20,12 @@
  * THE SOFTWARE.
  */
 
-package ;
+ package ;
 
+import cpp.Lib;
 import haxe.io.Bytes;
-import neko.Lib;
 import sys.io.File;
 
-import hxpixel.images.color.Rgb;
 import hxpixel.images.gif.GifDecoder;
 import hxpixel.images.png.PngDecoder;
 import hxpixel.images.pnm.PpmEncoder;
@@ -35,7 +34,7 @@ class Main
 {
 	
 	static function main() 
-	{   
+	{
         var pngBytes = haxe.Resource.getBytes("16x16_16colors_001_png");
         var pngPpm = convertPngToPpm(pngBytes);
         Lib.print(pngPpm);
@@ -47,8 +46,8 @@ class Main
         var gifPpm = convertGifToPpm(gifBytes);
         Lib.print(gifPpm);
         File.saveContent("16x16_16colors_001_gif.ppm", gifPpm);
+		
 	}
-	
     static function convertPngToPpm(bytes : Bytes)
     {
         var pnginfo = PngDecoder.decode(bytes);        

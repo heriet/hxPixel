@@ -1,0 +1,3 @@
+#neko
+-main tests.Test
+-neko testbin/test.n
