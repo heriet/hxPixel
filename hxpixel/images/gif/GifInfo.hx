@@ -23,6 +23,7 @@
 package hxpixel.images.gif;
 
 import hxpixel.images.color.Rgb;
+import hxpixel.images.color.Rgba;
 
 enum Version {
     Gif87a;
@@ -59,5 +60,20 @@ class GifInfo
     public function get_numFrames() : Int
     {
         return frameList.length;
+    }
+    
+    public function getGlobalRbgaPalette() : Array<Rgba>
+    {
+        var rgbaPalette = new Array<Rgba>();
+        
+        for (i in 0 ... globalColorTable.length) {
+            rgbaPalette[i] = globalColorTable[i];
+            
+            if (i == backgroundColorIndex) {
+                rgbaPalette[i].alpha = 0;
+            }
+        }
+        
+        return rgbaPalette;
     }
 }

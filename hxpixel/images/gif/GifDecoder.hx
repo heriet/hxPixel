@@ -194,28 +194,23 @@ class GifDecoder
         var joinBytes = joinOutput.getBytes();
         var bitReader = new BitReader(joinBytes);
         
-        var bitDepth = gifFrameInfo.parent.colorResolution + 1;
-        
         var codeLength = lzwMinimumCodeSize + 1;
         var clearCode = 1 << lzwMinimumCodeSize;
         var endCode = clearCode + 1;
         var registerNum = endCode + 1;
         
-        var dictionary = new Map<Int, Bits>();
-        for (i in 0 ... clearCode) {
-            dictionary[i] = Bits.fromIntBits(i, lzwMinimumCodeSize);
-        }
-        
         var bitWriter = new BitWriter();
         var pixelNum = gifFrameInfo.imageWidth * gifFrameInfo.imageHeight;
+        
+        var dictionary = createInitialDictionary(lzwMinimumCodeSize);
         
         var firstCode = bitReader.readBits(codeLength);
         var prefix;
         
         if (firstCode.toInt() == clearCode) {
-            prefix = bitReader.readBits(codeLength).subBits(0, bitDepth);
+            prefix = bitReader.readBits(codeLength).subBits(0, lzwMinimumCodeSize);
         } else {
-            prefix = firstCode.subBits(0, bitDepth);
+            prefix = firstCode.subBits(0, lzwMinimumCodeSize);
         }
         
         var suffix = prefix.copy();
@@ -224,14 +219,25 @@ class GifDecoder
         while (readedPixel < pixelNum) {
             var code = bitReader.readIntBits(codeLength);
             
+            if (code == clearCode) {
+                dictionary = createInitialDictionary(lzwMinimumCodeSize);
+                codeLength = lzwMinimumCodeSize + 1;
+                registerNum = endCode + 1;
+                
+                bitWriter.writeBits(prefix);
+                prefix = bitReader.readBits(codeLength).subBits(0, lzwMinimumCodeSize);
+                
+                continue;
+            }
+            
             if (!dictionary.exists(code)) {
                 bitWriter.writeBits(prefix);
                 
-                suffix = prefix.subBits(0, bitDepth) + suffix;
+                suffix = prefix.subBits(0, lzwMinimumCodeSize) + suffix;
                 dictionary[registerNum] = suffix;
                 registerNum++;
                 
-                if (registerNum >= (1 << codeLength)) {
+                if (registerNum >= (1 << codeLength) && codeLength <= 12) {
                     codeLength++;
                 }
                 
@@ -241,28 +247,37 @@ class GifDecoder
                 bitWriter.writeBits(prefix);
                 suffix = dictionary[code];
                 
-                dictionary[registerNum] = prefix + suffix.subBits(0, bitDepth);
+                dictionary[registerNum] = prefix + suffix.subBits(0, lzwMinimumCodeSize);
                 registerNum++;
                 
-                if (registerNum >= (1 << codeLength)) {
+                if (registerNum >= (1 << codeLength) && codeLength <= 12) {
                     codeLength++;
                 }
                 
                 prefix = suffix.copy();
             }
             
-            readedPixel = Std.int(bitWriter.length / bitDepth);
+            readedPixel = Std.int(bitWriter.length / lzwMinimumCodeSize);
         }
         
         bitWriter.writeBits(prefix);
         
-        
         var bytes = bitWriter.getBytes();
         var bitReader2 = new BitReader(bytes);
         for(i in 0 ... pixelNum) {
-            gifFrameInfo.imageData[i] = bitReader2.readIntBits(bitDepth);
+            gifFrameInfo.imageData[i] = bitReader2.readIntBits(lzwMinimumCodeSize);
+        }
+    }
+    
+    static function createInitialDictionary(lzwMinimumCodeSize : Int) : Map<Int, Bits>
+    {
+        var dictionary = new Map<Int, Bits>();
+        var len = 1 << lzwMinimumCodeSize;
+        for (i in 0 ... len) {
+            dictionary[i] = Bits.fromIntBits(i, lzwMinimumCodeSize);
         }
         
+        return dictionary;
     }
     
     static function readRgb(input: Input) : Rgb

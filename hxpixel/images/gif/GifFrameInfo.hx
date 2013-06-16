@@ -23,6 +23,7 @@
 package hxpixel.images.gif;
 
 import hxpixel.images.color.Rgb;
+import hxpixel.images.color.Rgba;
 
 class GifFrameInfo
 {
@@ -59,10 +60,25 @@ class GifFrameInfo
         imageData = [];
     }
     
-    public function getRgbaImageData() : Array<Int>
+    public function getLocalRbgaPalette() : Array<Rgba>
     {
-        var rgbaPalette = parent.globalColorTable;
-        var rgbaImageData = new Array<Int>();
+        var rgbaPalette = new Array<Rgba>();
+        
+        for (i in 0 ... localColorTable.length) {
+            rgbaPalette[i] = localColorTable[i];
+            
+            if (transparentColorFlag && i == transparentColorIndex) {
+                rgbaPalette[i].alpha = 0;
+            }
+        }
+        
+        return rgbaPalette;
+    }
+    
+    public function getRgbaImageData() : Array<Rgba>
+    {
+        var rgbaPalette = localColorTableFlag ? getLocalRbgaPalette() : parent.getGlobalRbgaPalette();
+        var rgbaImageData = new Array<Rgba>();
         for (i in 0 ... imageData.length) {
             rgbaImageData[i] = rgbaPalette[imageData[i]];
         }

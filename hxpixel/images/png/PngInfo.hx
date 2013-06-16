@@ -21,6 +21,8 @@
  */
 
 package hxpixel.images.png;
+import hxpixel.images.color.Rgb;
+import hxpixel.images.color.Rgba;
 
 enum ColorType {
     GreyScale;
@@ -66,7 +68,7 @@ class PngInfo
     public var bitGray: Int;
     
     /* RGB Palette [PLTE] */
-    public var palette: Array<Int>;
+    public var palette: Array<Rgb>;
     
     /* Image [IDAT] */
     public var imageData: Array<Int>;
@@ -87,32 +89,32 @@ class PngInfo
         paletteTransparent = [];
     }
     
-    public function getRbgaPalette() : Array<Int>
+    public function getRbgaPalette() : Array<Rgba>
     {
-        var rgbaPalette = new Array<Int>();
+        var rgbaPalette = new Array<Rgba>();
         
         var transparentLength = paletteTransparent.length;
         for (i in 0 ... palette.length) {
             rgbaPalette[i] = palette[i];
             
             if (i < transparentLength) {
-                rgbaPalette[i] += paletteTransparent[i] << 24;
+                rgbaPalette[i].alpha = paletteTransparent[i];
             } else {
-                rgbaPalette[i] += 0xFF << 24;
+                rgbaPalette[i].alpha = 0xFF;
             }
         }
         
         return rgbaPalette;
     }
     
-    public function getRgbaImageData() : Array<Int>
+    public function getRgbaImageData() : Array<Rgba>
     {
         if (!colotType.equals(IndexedColor)) {
             return imageData;
         }
         
         var rgbaPalette = getRbgaPalette();
-        var rgbaImageData = new Array<Int>();
+        var rgbaImageData = new Array<Rgba>();
         for (i in 0 ... imageData.length) {
             rgbaImageData[i] = rgbaPalette[imageData[i]];
         }

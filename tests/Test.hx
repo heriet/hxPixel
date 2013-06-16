@@ -23,6 +23,7 @@
 package tests;
 
 import haxe.unit.TestRunner;
+import tests.images.gif.TestGifDecoder;
 
 import tests.bytes.TestBits;
 
@@ -33,6 +34,7 @@ class Test
 	{
         var runner = new TestRunner();
         runner.add(new TestBits());
+        runner.add(new TestGifDecoder());
         runner.run();
         
     }
