@@ -120,7 +120,7 @@ abstract Bits(Array<Bool>)
     {
         var str = "";
         for(i in 0 ... length) {
-            str += this[i] ? "1" : "0";
+            str += this[length - i - 1] ? "1" : "0";
         }
         return str;
     }

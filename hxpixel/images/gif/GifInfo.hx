@@ -61,19 +61,4 @@ class GifInfo
     {
         return frameList.length;
     }
-    
-    public function getGlobalRbgaPalette() : Array<Rgba>
-    {
-        var rgbaPalette = new Array<Rgba>();
-        
-        for (i in 0 ... globalColorTable.length) {
-            rgbaPalette[i] = globalColorTable[i];
-            
-            if (i == backgroundColorIndex) {
-                rgbaPalette[i].alpha = 0;
-            }
-        }
-        
-        return rgbaPalette;
-    }
 }

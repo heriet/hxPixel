@@ -60,6 +60,21 @@ class GifFrameInfo
         imageData = [];
     }
     
+    public function getGlobalRbgaPalette() : Array<Rgba>
+    {
+        var rgbaPalette = new Array<Rgba>();
+        
+        for (i in 0 ... parent.globalColorTable.length) {
+            rgbaPalette[i] = parent.globalColorTable[i];
+            
+            if (transparentColorFlag && i == transparentColorIndex) {
+                rgbaPalette[i].alpha = 0;
+            }
+        }
+        
+        return rgbaPalette;
+    }
+    
     public function getLocalRbgaPalette() : Array<Rgba>
     {
         var rgbaPalette = new Array<Rgba>();
@@ -77,7 +92,7 @@ class GifFrameInfo
     
     public function getRgbaImageData() : Array<Rgba>
     {
-        var rgbaPalette = localColorTableFlag ? getLocalRbgaPalette() : parent.getGlobalRbgaPalette();
+        var rgbaPalette = localColorTableFlag ? getLocalRbgaPalette() : getGlobalRbgaPalette();
         var rgbaImageData = new Array<Rgba>();
         for (i in 0 ... imageData.length) {
             rgbaImageData[i] = rgbaPalette[imageData[i]];
