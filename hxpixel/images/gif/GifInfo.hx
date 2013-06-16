@@ -48,8 +48,10 @@ class GifInfo
     
     /* Gif Frame */
     public var frameList: Array<GifFrameInfo>;
-    
     public var numFrames(get, never): Int;
+    
+    /* Gif Animation */
+    public var animationLoopCount: Int;
     
     public function new() 
     {

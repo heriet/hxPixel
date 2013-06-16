@@ -53,12 +53,17 @@ class GifDecoder
         
         while(true) {
             var signature = bytesInput.readByte();
+            
             if (signature == 0x21) {
                 var label = bytesInput.readByte();
+                
                 if (label == 0xF9) {
                     readGraphicControlExtension(bytesInput, gifFrameInfo);
-                } else {
-                    break;
+                } else if (label == 0xFF) {
+                    readApplicationExtension(bytesInput, gifFrameInfo);
+                }
+                else {
+                    throw Error.UnsupportedFormat;
                 }
             } else if (signature == 0x2C) {
                 readImageDescriptor(bytesInput, gifFrameInfo);
@@ -80,7 +85,7 @@ class GifDecoder
         return gifInfo;
     }
     
-    private static function readHeader(input:Input, gifInfo:GifInfo)
+    static function readHeader(input:Input, gifInfo:GifInfo)
     {
         validateSignature(input.read(3));
         readVersion(input.read(3), gifInfo);
@@ -99,14 +104,14 @@ class GifDecoder
         
     }
     
-    private static function validateSignature(bytes:Bytes)
+    static function validateSignature(bytes:Bytes)
     {
         if (bytes.toString() != "GIF") {
             throw Error.InvalidFormat;
         }
     }
     
-    private static function readVersion(bytes:Bytes, gifInfo:GifInfo)
+    static function readVersion(bytes:Bytes, gifInfo:GifInfo)
     {
         switch(bytes.toString()) {
             case "87a":
@@ -119,7 +124,7 @@ class GifDecoder
         }
     }
     
-    private static function readGlobalColorTable(input:Input, gifInfo:GifInfo)
+    static function readGlobalColorTable(input:Input, gifInfo:GifInfo)
     {
         var tableLength = 1 << (gifInfo.sizeOfGlobalTable + 1);
         
@@ -128,7 +133,7 @@ class GifDecoder
         }
     }
     
-    private static function readGraphicControlExtension(input:Input, gifFrameInfo:GifFrameInfo)
+    static function readGraphicControlExtension(input:Input, gifFrameInfo:GifFrameInfo)
     {
         var blockSize = input.readByte();
         if (blockSize != 0x04) {
@@ -149,9 +154,39 @@ class GifDecoder
         }
     }
     
-
+    static function readApplicationExtension(input:Input, gifFrameInfo:GifFrameInfo)
+    {
+        var blockSize = input.readByte();
+        if (blockSize != 0x0b) {
+            throw Error.InvalidFormat;
+        }
+        
+        // Application Identifier
+        input.readInt32();
+        input.readInt32();
+        
+        // Application Authentication Code
+        input.readByte();
+        input.readByte();
+        input.readByte();
+        
+        var applicationBlockSize = input.readByte();
+        if (applicationBlockSize == 3) {
+            input.readByte();
+            
+            gifFrameInfo.parent.animationLoopCount = input.readInt16();
+            
+        } else {
+            throw UnsupportedFormat;
+        }
+        
+        var terminator = input.readByte();
+        if (terminator != 0) {
+            throw Error.InvalidFormat;
+        }
+    }
     
-    static public function readImageDescriptor(input:Input, gifFrameInfo:GifFrameInfo) 
+    static function readImageDescriptor(input:Input, gifFrameInfo:GifFrameInfo) 
     {
         gifFrameInfo.imageLeftPosition = input.readInt16();
         gifFrameInfo.imageTopPosition = input.readInt16();
@@ -167,7 +202,7 @@ class GifDecoder
         
     }
     
-    static public function readLocalColorTable(input:Input, gifFrameInfo:GifFrameInfo) 
+    static function readLocalColorTable(input:Input, gifFrameInfo:GifFrameInfo) 
     {
         var tableLength = 1 << (gifFrameInfo.sizeOfLocalColorTable + 1);
         
@@ -176,7 +211,7 @@ class GifDecoder
         }
     }
     
-    static public function readImageData(input:Input, gifFrameInfo:GifFrameInfo) 
+    static function readImageData(input:Input, gifFrameInfo:GifFrameInfo) 
     {
         var lzwMinimumCodeSize = input.readByte();
         
@@ -233,7 +268,7 @@ class GifDecoder
             if (!dictionary.exists(code)) {
                 bitWriter.writeBits(prefix);
                 
-                suffix = prefix.subBits(0, lzwMinimumCodeSize) + suffix;
+                suffix = prefix + prefix.subBits(0, lzwMinimumCodeSize);
                 dictionary[registerNum] = suffix;
                 registerNum++;
                 
@@ -263,9 +298,9 @@ class GifDecoder
         bitWriter.writeBits(prefix);
         
         var bytes = bitWriter.getBytes();
-        var bitReader2 = new BitReader(bytes);
+        var decodedBitReader = new BitReader(bytes);
         for(i in 0 ... pixelNum) {
-            gifFrameInfo.imageData[i] = bitReader2.readIntBits(lzwMinimumCodeSize);
+            gifFrameInfo.imageData[i] = decodedBitReader.readIntBits(lzwMinimumCodeSize);
         }
     }
     
