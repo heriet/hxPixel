@@ -97,10 +97,13 @@ class PngDecoder
     private static function validateSignature(signatureBytes:Bytes)
     {
         var bytesInput = new BytesInputWrapper(signatureBytes, Endian.BigEndian);
-        
-        if (bytesInput.readInt32() != 0x89504E47 || bytesInput.readInt32() != 0x0D0A1A0A) {
-            throw Error.InvalidFormat;
-        }
+
+	    if (#if neko bytesInput.readString(4).indexOf('PNG') == -1 #else
+		    bytesInput.readInt32() != 0x89504E47 #end
+		    || bytesInput.readInt32() != 0x0D0A1A0A)
+	    {
+		    throw Error.InvalidFormat;
+	    }
     }
     
     private static function decodeHeader(bytes:Bytes, pngInfo:PngInfo)
