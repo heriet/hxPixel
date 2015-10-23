@@ -4,7 +4,7 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\hxPixeljs.js" />
+    <movie path="bin\hxpixel.js" />
     <movie fps="0" />
     <movie width="0" />
     <movie height="0" />
@@ -22,6 +22,7 @@
   <build>
     <option directives="" />
     <option flashStrict="False" />
+    <option noInlineOnDebug="False" />
     <option mainClass="Main" />
     <option enabledebug="False" />
     <option additional="-resource ../assets/gif/16x16_16colors_001.gif@16x16_16colors_001_gif&#xA;-resource ../assets/png/16x16_16colors_001.png@16x16_16colors_001_png" />
@@ -36,7 +37,7 @@
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
-    <!-- example: <hidden path="..." /> -->
+    <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />

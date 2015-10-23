@@ -4,17 +4,26 @@
 	<meta charset="utf-8"/>
 	<title>hxPixel-js</title>
 	<meta name="description" content="" />
-<style type="text/css">
-<!--
-canvas {
-  width:800px;
-  height:800px;
-}
--->
-</style>
 </head>
 <body>
-	<div id="haxe:trace"></div>
-	<script src="hxPixeljs.js"></script>
+<script src="hxpixel.js"></script>
+<script>
+
+  loadBinary('../../assets/png/16x16_16colors_001.png')
+
+  function loadBinary(url) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function(e) {
+      var bytes = new Uint8Array(this.response);
+      var png = PngDecoder.decode(bytes);
+      console.log(png);
+    };
+
+    xhr.send();
+  }
+
+</script>
 </body>
 </html>
