@@ -1,3 +1,4 @@
 samples/cpp/bin/*
+testbin/*
 samples/js/bin/*.js
 work/*
