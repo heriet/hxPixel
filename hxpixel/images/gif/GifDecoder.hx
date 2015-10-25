@@ -38,10 +38,10 @@ enum Error {
 
 class GifDecoder
 {
-    public static function decode(bytes:Bytes): GifInfo
+    public static function decode(bytes:Bytes): GifImage
     {
         var bytesInput = new BytesInputWrapper(bytes, Endian.LittleEndian);
-        var gifInfo = new GifInfo();
+        var gifInfo = new GifImage();
         
         readHeader(bytesInput, gifInfo);
         
@@ -49,7 +49,7 @@ class GifDecoder
             readGlobalColorTable(bytesInput, gifInfo);
         }
         
-        var gifFrameInfo = new GifFrameInfo(gifInfo);
+        var gifFrameInfo = new GifFrame(gifInfo);
         
         while(true) {
             var signature = bytesInput.readByte();
@@ -73,7 +73,7 @@ class GifDecoder
                 readImageData(bytesInput, gifFrameInfo);
                 
                 gifInfo.frameList.push(gifFrameInfo);
-                gifFrameInfo = new GifFrameInfo(gifInfo);
+                gifFrameInfo = new GifFrame(gifInfo);
                 
             } else if (signature == 0x3b) {
                 break;
@@ -85,7 +85,7 @@ class GifDecoder
         return gifInfo;
     }
     
-    static function readHeader(input:Input, gifInfo:GifInfo)
+    static function readHeader(input:Input, gifInfo:GifImage)
     {
         validateSignature(input.read(3));
         readVersion(input.read(3), gifInfo);
@@ -111,7 +111,7 @@ class GifDecoder
         }
     }
     
-    static function readVersion(bytes:Bytes, gifInfo:GifInfo)
+    static function readVersion(bytes:Bytes, gifInfo:GifImage)
     {
         switch(bytes.toString()) {
             case "87a":
@@ -124,7 +124,7 @@ class GifDecoder
         }
     }
     
-    static function readGlobalColorTable(input:Input, gifInfo:GifInfo)
+    static function readGlobalColorTable(input:Input, gifInfo:GifImage)
     {
         var tableLength = 1 << (gifInfo.sizeOfGlobalTable + 1);
         
@@ -133,7 +133,7 @@ class GifDecoder
         }
     }
     
-    static function readGraphicControlExtension(input:Input, gifFrameInfo:GifFrameInfo)
+    static function readGraphicControlExtension(input:Input, gifFrameInfo:GifFrame)
     {
         var blockSize = input.readByte();
         if (blockSize != 0x04) {
@@ -154,7 +154,7 @@ class GifDecoder
         }
     }
     
-    static function readApplicationExtension(input:Input, gifFrameInfo:GifFrameInfo)
+    static function readApplicationExtension(input:Input, gifFrameInfo:GifFrame)
     {
         var blockSize = input.readByte();
         if (blockSize != 0x0b) {
@@ -186,7 +186,7 @@ class GifDecoder
         }
     }
     
-    static function readImageDescriptor(input:Input, gifFrameInfo:GifFrameInfo) 
+    static function readImageDescriptor(input:Input, gifFrameInfo:GifFrame) 
     {
         gifFrameInfo.imageLeftPosition = input.readInt16();
         gifFrameInfo.imageTopPosition = input.readInt16();
@@ -202,7 +202,7 @@ class GifDecoder
         
     }
     
-    static function readLocalColorTable(input:Input, gifFrameInfo:GifFrameInfo) 
+    static function readLocalColorTable(input:Input, gifFrameInfo:GifFrame) 
     {
         var tableLength = 1 << (gifFrameInfo.sizeOfLocalColorTable + 1);
         
@@ -211,7 +211,7 @@ class GifDecoder
         }
     }
     
-    static function readImageData(input:Input, gifFrameInfo:GifFrameInfo) 
+    static function readImageData(input:Input, gifFrameInfo:GifFrame) 
     {
         var lzwMinimumCodeSize = input.readByte();
         

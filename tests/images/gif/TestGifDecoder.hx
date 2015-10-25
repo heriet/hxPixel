@@ -24,10 +24,10 @@ package tests.images.gif;
 
 import haxe.unit.TestCase;
 import hxpixel.images.gif.GifDecoder;
-import hxpixel.images.gif.GifFrameInfo;
-import hxpixel.images.gif.GifInfo;
+import hxpixel.images.gif.GifFrame;
+import hxpixel.images.gif.GifImage;
 import hxpixel.images.png.PngDecoder;
-import hxpixel.images.png.PngInfo;
+import hxpixel.images.png.PngImage;
 import sys.FileSystem;
 import sys.io.File;
 

@@ -25,9 +25,9 @@ package hxpixel.images.gif;
 import hxpixel.images.color.Rgb;
 import hxpixel.images.color.Rgba;
 
-class GifFrameInfo
+class GifFrame
 {
-    public var parent: GifInfo;
+    public var parent: GifImage;
     
     /* Graphic Control Extension */
     public var disposalMothod: Int;
@@ -52,7 +52,7 @@ class GifFrameInfo
     /* Image Data */
     public var imageData: Array<Int>;
     
-    public function new(parent : GifInfo) 
+    public function new(parent : GifImage) 
     {
         this.parent = parent;
         

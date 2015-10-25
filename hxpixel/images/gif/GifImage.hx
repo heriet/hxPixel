@@ -30,7 +30,7 @@ enum Version {
     Gif89a;
 }
  
-class GifInfo
+class GifImage
 {
     /* GIF Header */
     public var version: Version;
@@ -47,7 +47,7 @@ class GifInfo
     public var globalColorTable: Array<Rgb>;
     
     /* Gif Frame */
-    public var frameList: Array<GifFrameInfo>;
+    public var frameList: Array<GifFrame>;
     public var numFrames(get, never): Int;
     
     /* Gif Animation */

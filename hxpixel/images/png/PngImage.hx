@@ -49,7 +49,7 @@ enum InterlaceMethod {
     Adam7;
 }
 
-class PngInfo
+class PngImage
 {
     /* Header [IHDR] */
     public var width: Int;

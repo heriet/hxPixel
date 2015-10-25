@@ -30,7 +30,7 @@ import haxe.io.Input;
 import haxe.zip.InflateImpl;
 import hxpixel.bytes.Inflater;
 import hxpixel.bytes.BytesInputWrapper;
-import hxpixel.images.png.PngInfo;
+import hxpixel.images.png.PngImage;
 
 enum ChunkType {
     IHDR;
@@ -49,13 +49,13 @@ enum Error {
 
 class PngDecoder
 {   
-    public static function decode(bytes:Bytes): PngInfo
+    public static function decode(bytes:Bytes): PngImage
     {
         var bytesInput = new BytesInputWrapper(bytes, Endian.BigEndian);
         
         validateSignature(bytesInput.read(8));
         
-        var pngInfo = new PngInfo();
+        var pngInfo = new PngImage();
         var idatBuffer = new BytesOutput();
         
         while (bytesInput.getAbailable() > 12) {
@@ -106,7 +106,7 @@ class PngDecoder
 	    }
     }
     
-    private static function decodeHeader(bytes:Bytes, pngInfo:PngInfo)
+    private static function decodeHeader(bytes:Bytes, pngInfo:PngImage)
     {
         var bytesInput = new BytesInputWrapper(bytes, Endian.BigEndian);
         
@@ -150,7 +150,7 @@ class PngDecoder
         }
     }
     
-    private static function decodePalette(bytes:Bytes, pngInfo:PngInfo)
+    private static function decodePalette(bytes:Bytes, pngInfo:PngImage)
     {
         var bytesInput = new BytesInputWrapper(bytes, Endian.BigEndian);
         
@@ -164,7 +164,7 @@ class PngDecoder
         
     }
     
-    private static function decodeImage(bytes:Bytes, pngInfo:PngInfo)
+    private static function decodeImage(bytes:Bytes, pngInfo:PngImage)
     {
         var uncompressed = Inflater.uncompress(bytes);
         
@@ -178,7 +178,7 @@ class PngDecoder
         }
     }
     
-    private static function decodeRgbImage(bytes:Bytes, pngInfo:PngInfo)
+    private static function decodeRgbImage(bytes:Bytes, pngInfo:PngImage)
     {
         var bytesInput = new BytesInputWrapper(bytes, Endian.BigEndian);
         
@@ -215,31 +215,31 @@ class PngDecoder
         }
     }
     
-    private static function applyReverseFilterNone(x:Int, y:Int, color:Int, pngInfo:PngInfo)
+    private static function applyReverseFilterNone(x:Int, y:Int, color:Int, pngInfo:PngImage)
     {
         return color;
     }
     
-    private static function applyReverseFilterSub(x:Int, y:Int, color:Int, pngInfo:PngInfo)
+    private static function applyReverseFilterSub(x:Int, y:Int, color:Int, pngInfo:PngImage)
     {
         var leftColor = seekScanLine(x - 1, y, pngInfo);
         return margeColor(color, leftColor);
     }
     
-    private static function applyReverseFilterUp(x:Int, y:Int, color:Int, pngInfo:PngInfo)
+    private static function applyReverseFilterUp(x:Int, y:Int, color:Int, pngInfo:PngImage)
     {
         var aboveColor = seekScanLine(x, y - 1, pngInfo);
         return margeColor(color, aboveColor);
     }
     
-    private static function applyReverseFilterAverage(x:Int, y:Int, color:Int, pngInfo:PngInfo)
+    private static function applyReverseFilterAverage(x:Int, y:Int, color:Int, pngInfo:PngImage)
     {
         var leftColor = seekScanLine(x - 1, y, pngInfo);
         var aboveColor = seekScanLine(x, y - 1, pngInfo);
         return margeColor(color, Std.int(margeColor(leftColor, aboveColor)/2));
     }
     
-    private static function applyReverseFilterPaeth(x:Int, y:Int, color:Int, pngInfo:PngInfo)
+    private static function applyReverseFilterPaeth(x:Int, y:Int, color:Int, pngInfo:PngImage)
     {
         var leftColor = seekScanLine(x - 1, y, pngInfo);
         var aboveColor = seekScanLine(x, y - 1, pngInfo);
@@ -259,7 +259,7 @@ class PngDecoder
         return margeColor(color, paethColor);
     }
     
-    private static function seekScanLine(x:Int, y:Int, pngInfo:PngInfo)
+    private static function seekScanLine(x:Int, y:Int, pngInfo:PngImage)
     {
         if (x < 0 || y < 0) {
             return 0;
@@ -299,7 +299,7 @@ class PngDecoder
         }
     }
     
-    private static function decodeIndexedImage(bytes:Bytes, pngInfo:PngInfo)
+    private static function decodeIndexedImage(bytes:Bytes, pngInfo:PngImage)
     {
         pngInfo.imageData = [];
         
@@ -310,7 +310,7 @@ class PngDecoder
         }
     }
     
-    private static function decodeByteIndexedImage(bytes:Bytes, pngInfo:PngInfo)
+    private static function decodeByteIndexedImage(bytes:Bytes, pngInfo:PngImage)
     {
         var pixelIndex = 0;
         var bytesInput = new BytesInputWrapper(bytes, Endian.BigEndian);
@@ -325,7 +325,7 @@ class PngDecoder
         }
     }
     
-    private static function decodeBitIndexedImage(bytes:Bytes, pngInfo:PngInfo)
+    private static function decodeBitIndexedImage(bytes:Bytes, pngInfo:PngImage)
     {
         var bytesInput = new BytesInputWrapper(bytes, Endian.BigEndian);
         var n = bytes.length;
@@ -371,7 +371,7 @@ class PngDecoder
         
     }
     
-    private static function decodeTransparent(bytes:Bytes, pngInfo:PngInfo)
+    private static function decodeTransparent(bytes:Bytes, pngInfo:PngImage)
     {
         var bytesInput = new BytesInputWrapper(bytes, Endian.BigEndian);
         
@@ -387,7 +387,7 @@ class PngDecoder
         }
     }
     
-    private static function decodeBackground(bytes:Bytes, pngInfo:PngInfo)
+    private static function decodeBackground(bytes:Bytes, pngInfo:PngImage)
     {
         var bytesInput = new BytesInputWrapper(bytes, Endian.BigEndian);
         
