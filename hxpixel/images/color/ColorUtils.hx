@@ -35,4 +35,13 @@ class ColorUtils
         
         return Rgb.fromComponents(red, green, blue);
     }
+    
+    public static function readBgr(input: Input) : Rgb
+    {
+        var blue = input.readByte();
+        var green = input.readByte();
+        var red = input.readByte();
+        
+        return Rgb.fromComponents(red, green, blue);
+    }
 }

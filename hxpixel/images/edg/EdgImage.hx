@@ -34,14 +34,13 @@ class EdgImage
 {
     /* Edg Header */
     public var version: Version;
-    public var width: Int;
-    public var height: Int;
     public var bitDepth: Int;
-    public var isEachPalette: Bool;
-    public var basePosition: Int;
+    public var isEachPalette: Bool; // ページ毎にパレット指定
+    public var basePosition: Int;   // ページ座標基準
     
     /* Edg Palette Bank */
     public var paletteBank: Array<Array<Rgb>>;
+    public var transparentColorIndex: Int;
     
     /* Edg Page */
     public var pages: Array<EdgPage>;
@@ -51,6 +50,8 @@ class EdgImage
     {
         paletteBank = [];
         pages = [];
+        isEachPalette = false;
+        basePosition = 0;
     }
     
     public function get_numPages() : Int

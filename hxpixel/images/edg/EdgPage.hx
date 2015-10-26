@@ -56,12 +56,21 @@ class EdgPage
     {
         this.parent = parent;
         
+        bitDepth = 8;
+        isTransparent = false;
+        isAbailable = true;
+        isChild = false;
+        x = 0;
+        y = 0;
+        isRelativeX = false;
+        isRelativeY = false;
+        
         layers = [];
     }
     
     public function get_palette() : Array<Rgb>
     {
-        return parent.paletteBank[paletteBankIndex];
+        return parent.paletteBank[parent.isEachPalette ? paletteBankIndex : 0];
     }
     
     
@@ -70,10 +79,12 @@ class EdgPage
         var rgbaPalette = new Array<Rgba>();
         var currentPalette = palette;
         
+        var currerntTransparentColorIndex = parent.isEachPalette ? transparentColorIndex : parent.transparentColorIndex;
+        
         for (i in 0 ... currentPalette.length) {
             rgbaPalette[i] = currentPalette[i];
             
-            if (isTransparent && i == transparentColorIndex) {
+            if (isTransparent && (i == currerntTransparentColorIndex)) {
                 rgbaPalette[i].alpha = 0;
             }
         }

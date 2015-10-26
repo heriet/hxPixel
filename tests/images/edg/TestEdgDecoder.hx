@@ -52,6 +52,11 @@ class TestEdgDecoder extends TestCase
             if(FileSystem.exists(PATH_DIR_ASSET_EDG + edg1FileName)) {
                 compareWithPngDecoder(fileName, edg1FileName);
             }
+            
+            var edg2FileName = "edg2_" + fileNameWithoutExt + ".edg";
+            if(FileSystem.exists(PATH_DIR_ASSET_EDG + edg2FileName)) {
+                compareWithPngDecoder(fileName, edg2FileName);
+            }
         }
     }
     
@@ -60,17 +65,42 @@ class TestEdgDecoder extends TestCase
         var edgImage = decodeEdgImage(PATH_DIR_ASSET_EDG + "edg1_16x16_16colors_001.edg");
         
         assertEquals(Version.Edge1, edgImage.version);
-        assertEquals(16, edgImage.width);
-        assertEquals(16, edgImage.height);
         assertEquals(1, edgImage.numPages);
         
         var page = edgImage.pages[0];
+        assertEquals(16, page.width);
+        assertEquals(16, page.height);
         assertEquals(1, page.numLayers);
+        assertEquals(0, page.x);
+        assertEquals(0, page.y);
+        assertEquals(false, page.isRelativeX);
+        assertEquals(false, page.isRelativeY);
         
         var layer = page.layers[0];
         assertEquals(16*16, layer.imageData.length);
         
-    }   
+    }
+    
+    public function testEdge2()
+    {
+        var edgImage = decodeEdgImage(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg");
+        
+        assertEquals(Version.Edge2, edgImage.version);
+        assertEquals(1, edgImage.numPages);
+        
+        var page = edgImage.pages[0];
+        assertEquals(16, page.width);
+        assertEquals(16, page.height);
+        assertEquals(1, page.numLayers);
+        assertEquals(0, page.x);
+        assertEquals(0, page.y);
+        assertEquals(false, page.isRelativeX);
+        assertEquals(false, page.isRelativeY);
+        
+        var layer = page.layers[0];
+        assertEquals(16*16, layer.imageData.length);
+        
+    }
     
     function compareWithPngDecoder(pngFileName: String, edgFileName: String)
     {
@@ -84,7 +114,6 @@ class TestEdgDecoder extends TestCase
             edgPage.isTransparent = true;
         }
         var edgRgbaArray = edgPage.getRgbaImageData();
-        
         
         for (i in 0 ... edgRgbaArray.length) {
             if (edgRgbaArray[i] != pngRgbaArray[i]) {

@@ -22,6 +22,7 @@
   <build>
     <option directives="" />
     <option flashStrict="False" />
+    <option noInlineOnDebug="False" />
     <option mainClass="Main" />
     <option enabledebug="True" />
     <option additional="-resource ../assets/gif/16x16_16colors_001.gif@16x16_16colors_001_gif&#xA;-resource ../assets/png/16x16_16colors_001.png@16x16_16colors_001_png" />
@@ -50,6 +51,7 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Default" />
+    <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
   <storage />
