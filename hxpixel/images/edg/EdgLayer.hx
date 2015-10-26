@@ -20,26 +20,39 @@
  * THE SOFTWARE.
  */
 
-package tests;
+package hxpixel.images.edg;
 
-import haxe.unit.TestRunner;
+import hxpixel.images.color.Rgb;
+import hxpixel.images.color.Rgba;
 
-import tests.bytes.TestBits;
-
-import tests.images.gif.TestGifDecoder;
-import tests.images.edg.TestEdgDecoder;
-
-class Test
+class EdgLayer
 {
-
-	static function main() 
-	{
-        var runner = new TestRunner();
-        runner.add(new TestBits());
-        runner.add(new TestGifDecoder());
-        runner.add(new TestEdgDecoder());
-        runner.run();
+    public var parent: EdgPage;
+    
+    public var name: String;
+    public var visible: Bool;
+    public var isChild: Bool;
+    public var isLocked: Bool;
+    public var density: Int;
+    
+    /* Image Data */
+    public var imageData: Array<Int>;
+    
+    public function new(parent : EdgPage) 
+    {
+        this.parent = parent;
         
+        imageData = [];
     }
     
+    public function getRgbaImageData() : Array<Rgba>
+    {
+        var rgbaPalette = parent.getRbgaPalette();
+        var rgbaImageData = new Array<Rgba>();
+        for (i in 0 ... imageData.length) {
+            rgbaImageData[i] = rgbaPalette[imageData[i]];
+        }
+        
+        return rgbaImageData;
+    }
 }

@@ -20,26 +20,19 @@
  * THE SOFTWARE.
  */
 
-package tests;
+package hxpixel.images.color;
 
-import haxe.unit.TestRunner;
+import haxe.io.Input;
 
-import tests.bytes.TestBits;
-
-import tests.images.gif.TestGifDecoder;
-import tests.images.edg.TestEdgDecoder;
-
-class Test
+class ColorUtils
 {
-
-	static function main() 
-	{
-        var runner = new TestRunner();
-        runner.add(new TestBits());
-        runner.add(new TestGifDecoder());
-        runner.add(new TestEdgDecoder());
-        runner.run();
+  
+    public static function readRgb(input: Input) : Rgb
+    {
+        var red = input.readByte();
+        var green = input.readByte();
+        var blue = input.readByte();
         
+        return Rgb.fromComponents(red, green, blue);
     }
-    
 }

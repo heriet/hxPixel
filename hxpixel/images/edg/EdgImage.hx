@@ -20,26 +20,41 @@
  * THE SOFTWARE.
  */
 
-package tests;
+package hxpixel.images.edg;
 
-import haxe.unit.TestRunner;
+import hxpixel.images.color.Rgb;
+import hxpixel.images.color.Rgba;
 
-import tests.bytes.TestBits;
+enum Version {
+    Edge1;
+    Edge2;
+}
 
-import tests.images.gif.TestGifDecoder;
-import tests.images.edg.TestEdgDecoder;
-
-class Test
+class EdgImage
 {
-
-	static function main() 
-	{
-        var runner = new TestRunner();
-        runner.add(new TestBits());
-        runner.add(new TestGifDecoder());
-        runner.add(new TestEdgDecoder());
-        runner.run();
-        
+    /* Edg Header */
+    public var version: Version;
+    public var width: Int;
+    public var height: Int;
+    public var bitDepth: Int;
+    public var isEachPalette: Bool;
+    public var basePosition: Int;
+    
+    /* Edg Palette Bank */
+    public var paletteBank: Array<Array<Rgb>>;
+    
+    /* Edg Page */
+    public var pages: Array<EdgPage>;
+    public var numPages(get, never): Int;
+    
+    public function new() 
+    {
+        paletteBank = [];
+        pages = [];
     }
     
+    public function get_numPages() : Int
+    {
+        return pages.length;
+    }
 }

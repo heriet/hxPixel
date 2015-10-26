@@ -30,6 +30,7 @@ import hxpixel.bytes.Bits;
 import hxpixel.bytes.BitWriter;
 import hxpixel.bytes.BytesInputWrapper;
 import hxpixel.images.color.Rgb;
+import hxpixel.images.color.ColorUtils;
  
 enum Error {
     InvalidFormat;
@@ -129,7 +130,7 @@ class GifDecoder
         var tableLength = 1 << (gifInfo.sizeOfGlobalTable + 1);
         
         for (i in 0 ... tableLength) {
-            gifInfo.globalColorTable.push(readRgb(input));
+            gifInfo.globalColorTable.push(ColorUtils.readRgb(input));
         }
     }
     
@@ -207,7 +208,7 @@ class GifDecoder
         var tableLength = 1 << (gifFrameInfo.sizeOfLocalColorTable + 1);
         
         for (i in 0 ... tableLength) {
-            gifFrameInfo.localColorTable.push(readRgb(input));
+            gifFrameInfo.localColorTable.push(ColorUtils.readRgb(input));
         }
     }
     
@@ -313,14 +314,5 @@ class GifDecoder
         }
         
         return dictionary;
-    }
-    
-    static function readRgb(input: Input) : Rgb
-    {
-        var red = input.readByte();
-        var green = input.readByte();
-        var blue = input.readByte();
-        
-        return Rgb.fromComponents(red, green, blue);
     }
 }

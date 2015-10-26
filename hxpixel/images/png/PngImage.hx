@@ -81,12 +81,26 @@ class PngImage
     public var background: Int;
     public var existBackground: Bool;
     
+    public var isTransparent(get, never): Bool;
+    
     
     public function new() 
     {
         palette = [];
         imageData = [];
         paletteTransparent = [];
+    }
+    
+    public function get_isTransparent(): Bool
+    {
+        for (i in 0 ... paletteTransparent.length) {
+            var alpha = paletteTransparent[i];
+            if (alpha != 0xFF) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     public function getRbgaPalette() : Array<Rgba>
