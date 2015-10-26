@@ -8,4 +8,3 @@ wip
 * PngDecoder
 * GifDecoder
 * EdgDecoder
-* EdgDecoder
