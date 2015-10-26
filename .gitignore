@@ -1,4 +1,6 @@
-samples/cpp/bin/*
 testbin/*
+samples/cpp/bin/*
 samples/js/bin/*.js
+samples/as3/bin/*
+samples/neko/bin/*
 work/*
