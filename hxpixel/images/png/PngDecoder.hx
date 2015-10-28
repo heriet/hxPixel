@@ -112,7 +112,7 @@ class PngDecoder
         
         pngInfo.width = bytesInput.readInt32();
         pngInfo.height = bytesInput.readInt32();
-        pngInfo.bitDepth = bytesInput.readInt8();
+        pngInfo.bitDepth = bytesInput.readByte();
         
         pngInfo.colotType = switch(bytesInput.readByte()) {
             case 0: throw Error.UnsupportedFormat; //ColorType.GreyScale;
@@ -377,7 +377,7 @@ class PngDecoder
         
         switch(pngInfo.colotType) {
             case ColorType.GreyScale:
-                pngInfo.transparent = bytesInput.readInt16();
+                pngInfo.transparent = bytesInput.readUInt16();
             case ColorType.TrueColor:
                 pngInfo.transparent = readRgb(bytesInput);
             case ColorType.IndexedColor:
@@ -395,7 +395,7 @@ class PngDecoder
             case ColorType.IndexedColor:
                 pngInfo.background = bytesInput.readByte();
             case ColorType.GreyScale, ColorType.GreyScaleWithAlpha:
-                pngInfo.background = bytesInput.readInt16();
+                pngInfo.background = bytesInput.readUInt16();
             case ColorType.TrueColor, ColorType.TrueColorWithAlpha:
                 pngInfo.background = readRgb(bytesInput);
         }

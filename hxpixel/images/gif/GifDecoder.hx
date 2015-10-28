@@ -91,8 +91,8 @@ class GifDecoder
         validateSignature(input.read(3));
         readVersion(input.read(3), gifInfo);
         
-        gifInfo.logicalScreenWidth = input.readInt16();
-        gifInfo.logicalScreenHeight = input.readInt16();
+        gifInfo.logicalScreenWidth = input.readUInt16();
+        gifInfo.logicalScreenHeight = input.readUInt16();
         
         var packedFields = input.readByte();
         gifInfo.globalColorTableFlag = (packedFields & 0x80) == 0x80; // 0b10000000
@@ -146,7 +146,7 @@ class GifDecoder
         gifFrameInfo.userInputFlag = (packedFields & 0x02) == 0x02; // 0b00000010
         gifFrameInfo.transparentColorFlag = (packedFields & 0x01) == 0x01; // 0b00000001
         
-        gifFrameInfo.delayTime = input.readInt16();
+        gifFrameInfo.delayTime = input.readUInt16();
         gifFrameInfo.transparentColorIndex = input.readByte();
         
         var terminator = input.readByte();
@@ -175,7 +175,7 @@ class GifDecoder
         if (applicationBlockSize == 3) {
             input.readByte();
             
-            gifFrameInfo.parent.animationLoopCount = input.readInt16();
+            gifFrameInfo.parent.animationLoopCount = input.readUInt16();
             
         } else {
             throw UnsupportedFormat;
@@ -189,10 +189,10 @@ class GifDecoder
     
     static function readImageDescriptor(input:Input, gifFrameInfo:GifFrame) 
     {
-        gifFrameInfo.imageLeftPosition = input.readInt16();
-        gifFrameInfo.imageTopPosition = input.readInt16();
-        gifFrameInfo.imageWidth = input.readInt16();
-        gifFrameInfo.imageHeight = input.readInt16();
+        gifFrameInfo.imageLeftPosition = input.readUInt16();
+        gifFrameInfo.imageTopPosition = input.readUInt16();
+        gifFrameInfo.imageWidth = input.readUInt16();
+        gifFrameInfo.imageHeight = input.readUInt16();
         
         var packedFields = input.readByte();
         

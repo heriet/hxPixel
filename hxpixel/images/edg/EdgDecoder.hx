@@ -179,7 +179,7 @@ class EdgDecoder
         
         var sourceLength = source.length;
         while (source.position < sourceLength) {
-            var id = source.readInt16();
+            var id = source.readUInt16();
             var length = source.readInt32();
             
             switch(id) {
@@ -193,7 +193,7 @@ class EdgDecoder
                     edgImage.pages.push(page);
                 case 3001:
                     if (length != 2) throw Error.InvalidFormat;
-                    paletteBankLength = source.readInt16();
+                    paletteBankLength = source.readUInt16();
                 case 3002:
                     if (length != 4) throw Error.InvalidFormat;
                     paletteLength = source.readInt32();
@@ -214,13 +214,13 @@ class EdgDecoder
         var pos = 0;
         
         while (pos < headerLength) {
-            var id = source.readInt16();
+            var id = source.readUInt16();
             var length = source.readInt32();
             
             switch(id) {
                 case 1000:
                     if (length != 2) throw Error.InvalidFormat;
-                    edgImage.basePosition = source.readInt16();
+                    edgImage.basePosition = source.readUInt16();
                 default:
                     source.read(length);
             }
@@ -235,7 +235,7 @@ class EdgDecoder
         var pos = 0;
         
         while (pos < headerLength) {
-            var id = source.readInt16();
+            var id = source.readUInt16();
             var length = source.readInt32();
             
             switch(id) {
@@ -256,7 +256,7 @@ class EdgDecoder
         var pos = 0;
         
         while (pos < dataLength) {
-            var id = source.readInt16();
+            var id = source.readUInt16();
             var length = source.readInt32();
             
             switch(id) {
@@ -288,7 +288,7 @@ class EdgDecoder
         var layerLength = 0;
         
         while (pos < dataLength) {
-            var id = source.readInt16();
+            var id = source.readUInt16();
             var length = source.readInt32();
             
             switch(id) {
@@ -296,10 +296,10 @@ class EdgDecoder
                     page.name = source.readString(length);
                 case 1005:
                     if (length != 2) throw Error.InvalidFormat;
-                    page.width = source.readInt16();
+                    page.width = source.readUInt16();
                 case 1006:
                     if (length != 2) throw Error.InvalidFormat;
-                    page.height = source.readInt16();
+                    page.height = source.readUInt16();
                 case 1007:
                     if (length != 4) throw Error.InvalidFormat;
                     page.paletteBankIndex = source.readInt32();
@@ -353,7 +353,7 @@ class EdgDecoder
         var pos = 0;
         
         while (pos < dataLength) {
-            var id = source.readInt16();
+            var id = source.readUInt16();
             var length = source.readInt32();
             
             switch(id) {
