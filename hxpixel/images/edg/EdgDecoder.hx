@@ -51,7 +51,7 @@ class EdgDecoder
             case Edge2:
                 readEdge2(bytesInput, edgImage);
             default:
-                throw Error.InvalidFormat;
+                throw Error.UnsupportedFormat;
         }
         
         return edgImage;

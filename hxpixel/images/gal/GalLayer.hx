@@ -20,26 +20,30 @@
  * THE SOFTWARE.
  */
 
-package hxpixel.images.edg;
+package hxpixel.images.gal;
 
 import hxpixel.images.color.Rgb;
 import hxpixel.images.color.Rgba;
 
-class EdgLayer
+class GalLayer
 {
-    public var parent: EdgPage;
+    public var parent: GalFrame;
     
     public var name: String;
     public var visible: Bool;
-    public var isChild: Bool;
-    public var isLocked: Bool;
+    public var isTransparent: Bool;
+    public var transparentColorIndex: Int;
+    public var density: Int;
     
     /* Image Data */
     public var imageData: Array<Int>;
     
-    public function new(parent : EdgPage) 
+public function new(parent : GalFrame) 
     {
         this.parent = parent;
+        
+        visible = true;
+        isTransparent = false;
         
         imageData = [];
     }

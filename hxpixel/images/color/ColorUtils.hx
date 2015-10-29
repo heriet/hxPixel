@@ -44,4 +44,14 @@ class ColorUtils
         
         return Rgb.fromComponents(red, green, blue);
     }
+    
+    public static function readRgba(input: Input) : Rgba
+    {
+        var red = input.readByte();
+        var green = input.readByte();
+        var blue = input.readByte();
+        var alpha = input.readByte();
+        
+        return Rgba.fromComponents(red, green, blue, alpha);
+    }
 }

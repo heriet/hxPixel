@@ -27,6 +27,7 @@ import haxe.unit.TestRunner;
 import tests.bytes.TestBits;
 
 import tests.images.gif.TestGifDecoder;
+import tests.images.gal.TestGalDecoder;
 import tests.images.edg.TestEdgDecoder;
 
 class Test
@@ -37,6 +38,7 @@ class Test
         var runner = new TestRunner();
         runner.add(new TestBits());
         runner.add(new TestGifDecoder());
+        runner.add(new TestGalDecoder());
         runner.add(new TestEdgDecoder());
         runner.run();
         

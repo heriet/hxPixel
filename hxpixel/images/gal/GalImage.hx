@@ -20,38 +20,36 @@
  * THE SOFTWARE.
  */
 
-package hxpixel.images.edg;
+package hxpixel.images.gal;
 
 import hxpixel.images.color.Rgb;
 import hxpixel.images.color.Rgba;
 
-class EdgLayer
+
+enum Version {
+    Gale102; // unsupported
+    Gale106;
+    GaleX200; // unsupported
+}
+
+class GalImage
 {
-    public var parent: EdgPage;
+    public var version: Version;
+    public var bitDepth: Int;
+    public var width: Int;
+    public var height: Int;
     
-    public var name: String;
-    public var visible: Bool;
-    public var isChild: Bool;
-    public var isLocked: Bool;
+    /* Gal Frame */
+    public var frames: Array<GalFrame>;
+    public var numFrames(get, never): Int;
     
-    /* Image Data */
-    public var imageData: Array<Int>;
-    
-    public function new(parent : EdgPage) 
+    public function new() 
     {
-        this.parent = parent;
-        
-        imageData = [];
+        frames = [];
     }
     
-    public function getRgbaImageData() : Array<Rgba>
+    public function get_numFrames() : Int
     {
-        var rgbaPalette = parent.getRbgaPalette();
-        var rgbaImageData = new Array<Rgba>();
-        for (i in 0 ... imageData.length) {
-            rgbaImageData[i] = rgbaPalette[imageData[i]];
-        }
-        
-        return rgbaImageData;
+        return frames.length;
     }
 }
