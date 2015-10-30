@@ -35,6 +35,10 @@ class GalLayer
     public var transparentColorIndex: Int;
     public var density: Int;
     
+    public var left:Int;
+    public var top:Int;
+    public var isLock: Bool;
+    
     /* Image Data */
     public var imageData: Array<Int>;
     
@@ -44,6 +48,11 @@ public function new(parent : GalFrame)
         
         visible = true;
         isTransparent = false;
+        density = 255;
+        
+        left = 0;
+        top = 0;
+        isLock = false;
         
         imageData = [];
     }

@@ -51,6 +51,11 @@ class TestGalDecoder extends TestCase
             if(FileSystem.exists(PATH_DIR_ASSET_GAL + gal106FileName)) {
                 compareWithPngDecoder(fileName, gal106FileName);
             }
+            
+            var galx200FileName = "galx200_" + fileNameWithoutExt + ".gal";
+            if(FileSystem.exists(PATH_DIR_ASSET_GAL + galx200FileName)) {
+                compareWithPngDecoder(fileName, galx200FileName);
+            }
         }
     }
     
@@ -59,6 +64,23 @@ class TestGalDecoder extends TestCase
         var galImage = decodeGalImage(PATH_DIR_ASSET_GAL + "gal106_16x16_16colors_001.gal");
         
         assertEquals(Version.Gale106, galImage.version);
+        assertEquals(1, galImage.numFrames);
+        
+        var frame = galImage.frames[0];
+        assertEquals(16, frame.width);
+        assertEquals(16, frame.height);
+        assertEquals(1, frame.numLayers);
+        
+        var layer = frame.layers[0];
+        assertEquals(16*16, layer.imageData.length);
+        
+    }
+    
+    public function testGaleX200()
+    {
+        var galImage = decodeGalImage(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal");
+        
+        assertEquals(Version.GaleX200, galImage.version);
         assertEquals(1, galImage.numFrames);
         
         var frame = galImage.frames[0];
@@ -92,7 +114,6 @@ class TestGalDecoder extends TestCase
             }
             
             assertEquals(pngRgbaArray[i], galRgbaArray[i]);
-            
         }
     }
     
