@@ -29,7 +29,7 @@ import hxpixel.images.color.Rgba;
 enum Version {
     Gale102; // unsupported
     Gale106;
-    GaleX200; // unsupported
+    GaleX200;
 }
 
 class GalImage
