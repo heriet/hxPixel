@@ -28,8 +28,6 @@ import hxpixel.bytes.BytesInputWrapper;
 import hxpixel.bytes.Inflater;
 import hxpixel.images.color.ColorUtils;
 import hxpixel.images.color.Rgb;
-import sys.FileSystem;
-import sys.io.File;
  
 enum Error {
     InvalidFormat;
