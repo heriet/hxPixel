@@ -24,12 +24,13 @@ package hxpixel.images.png;
 import hxpixel.images.color.Rgb;
 import hxpixel.images.color.Rgba;
 
-enum ColorType {
-    GreyScale;
-    TrueColor;
-    IndexedColor;
-    GreyScaleWithAlpha;
-    TrueColorWithAlpha;
+@:enum
+abstract ColorType(Int) from Int to Int {
+  var GreyScale = 1;
+  var TrueColor = 2;
+  var IndexedColor = 3;
+  var GreyScaleWithAlpha = 4;
+  var TrueColorWithAlpha = 5;
 }
 
 enum CompressionMethod {
@@ -123,7 +124,7 @@ class PngImage
     
     public function getRgbaImageData() : Array<Rgba>
     {
-        if (!colotType.equals(IndexedColor)) {
+        if (colotType != IndexedColor) {
             return imageData;
         }
         

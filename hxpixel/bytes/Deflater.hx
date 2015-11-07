@@ -20,35 +20,28 @@
  * THE SOFTWARE.
  */
 
-package tests;
+package hxpixel.bytes;
 
-import haxe.unit.TestRunner;
+import haxe.io.Bytes;
+import haxe.io.BytesInput;
 
-import tests.bytes.TestBits;
-
-import tests.images.gif.TestGifDecoder;
-import tests.images.gal.TestGalDecoder;
-import tests.images.edg.TestEdgDecoder;
-
-import tests.images.png.TestPngEncoder;
-
-class Test
+class Deflater
 {
-
-	static function main() 
-	{
-        var runner = new TestRunner();
-        
-        runner.add(new TestBits());
-        
-        runner.add(new TestGifDecoder());
-        runner.add(new TestGalDecoder());
-        runner.add(new TestEdgDecoder());
-        
-        runner.add(new TestPngEncoder());
-        
-        runner.run();
-        
-    }
     
+    public static function compress(bytes:Bytes): Bytes
+    {
+        #if neko
+            return neko.zip.Compress.run(bytes, 9);
+        #elseif flash9
+            var byteArray = new flash.utils.ByteArray();
+            byteArray.writeBytes(bytes.getData(), 0, bytes.length);
+            byteArray.compress();
+            return Bytes.ofData(byteArray);
+        #elseif cpp
+            return cpp.zip.Compress.run(bytes, 9);
+        #else
+            throw "Unsupported";
+            return null;
+        #end
+    }
 }

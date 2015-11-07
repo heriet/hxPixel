@@ -61,7 +61,7 @@ class PngDecoder
         while (bytesInput.getAbailable() > 12) {
             var chunkLength = bytesInput.readInt32();
             var chunkTypeString = bytesInput.readString(4);
-            var chunkData = bytesInput.read(chunkLength);
+            var chunkData = chunkLength > 0 ? bytesInput.read(chunkLength) : null;
             var crc = bytesInput.readInt32();
             
             var chunkType;
