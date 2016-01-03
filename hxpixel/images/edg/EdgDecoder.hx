@@ -86,8 +86,11 @@ class EdgDecoder
     
     static function readEdge1(input:Input, edgImage:EdgImage)
     {
+        edgImage.bitDepth = 8;
+        
         // edge1 is single page
         var page = new EdgPage(edgImage);
+        page.name = "000Page";
         
         input.read(5);
         
