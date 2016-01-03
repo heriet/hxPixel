@@ -89,6 +89,7 @@ class TestEdgDecoder extends TestCase
         assertEquals(1, edgImage.numPages);
         
         var page = edgImage.pages[0];
+        assertEquals("000Page", page.name);
         assertEquals(16, page.width);
         assertEquals(16, page.height);
         assertEquals(1, page.numLayers);
@@ -98,7 +99,8 @@ class TestEdgDecoder extends TestCase
         assertEquals(false, page.isRelativeY);
         
         var layer = page.layers[0];
-        assertEquals(16*16, layer.imageData.length);
+        assertEquals(16 * 16, layer.imageData.length);
+        assertEquals("Layer000", layer.name);
         
     }
     

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Heriet [http://heriet.info/].
+ * Copyright (c) heriet [http://heriet.info/].
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,42 +20,41 @@
  * THE SOFTWARE.
  */
 
-package tests;
+package hxpixel.images.psd;
+import hxpixel.images.color.Rgb;
+import hxpixel.images.color.Rgba;
 
-import haxe.unit.TestRunner;
+@:enum
+abstract ColorMode(Int) from Int to Int {
+  var Bitmap = 0;
+  var Grayscale = 1;
+  var Indexed = 2;
+  var Rgb = 3;
+  var Cmyk = 4;
+  var Multichannel = 7;
+  var Duotone = 8;
+  var Lab = 9;
+}
 
-import tests.bytes.TestBits;
-
-import tests.images.gif.TestGifDecoder;
-import tests.images.gal.TestGalDecoder;
-import tests.images.edg.TestEdgDecoder;
-import tests.images.psd.TestPsdDecoder;
-
-import tests.images.png.TestPngEncoder;
-
-import tests.images.psd.TestPsdConverter;
-
-class Test
+class PsdImage
 {
-
-	static function main() 
-	{
-        var runner = new TestRunner();
-        
-        runner.add(new TestBits());
-        
-        runner.add(new TestGifDecoder());
-        runner.add(new TestGalDecoder());
-        runner.add(new TestEdgDecoder());
-        // runner.add(new TestPngDecoder());
-        runner.add(new TestPsdDecoder());
-        
-        runner.add(new TestPngEncoder());
-        
-        runner.add(new TestPsdConverter());
-        
-        runner.run();
-        
+    public var width: Int;
+    public var height: Int;
+    public var numChannels: Int;
+    public var colorMode: ColorMode;
+    public var bitDepth: Int;
+    
+    public var palette: Array<Rgb>;
+    public var layers: Array<PsdLayer>;
+    
+    public var imageData: Array<Rgba>; // layers merged image
+    
+    
+    public function new() 
+    {
+        palette = [];
+        layers = [];
+        imageData = [];
     }
     
 }

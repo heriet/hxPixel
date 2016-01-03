@@ -285,8 +285,6 @@ class EdgDecoder
         var page = new EdgPage(edgImage);
         var pos = 0;
         
-        var layerLength = 0;
-        
         while (pos < dataLength) {
             var id = source.readUInt16();
             var length = source.readInt32();
@@ -308,7 +306,7 @@ class EdgDecoder
                     page.paletteBankIndex = source.readInt32();
                 case 2001:
                     if (length != 4) throw Error.InvalidFormat;
-                    layerLength = source.readInt32();
+                    var unknown = source.readInt32();
                 case 2003:
                     var layer = readEdge2Layer(source, length, edgImage, page);
                     page.layers.push(layer);
@@ -319,7 +317,7 @@ class EdgDecoder
                     if (length != 1) throw Error.InvalidFormat;
                     page.isTransparent = (source.readByte() != 0);
                 case 3002:
-                    page.name = source.readString(length);
+                    var unknown = source.readString(length);
                 case 3003:
                     if (length != 5) throw Error.InvalidFormat;
                     page.x = source.readInt32();
@@ -337,10 +335,6 @@ class EdgDecoder
             }
             
             pos += 6 + length; // id(2 byte) + length(4 byte) + length byte
-        }
-        
-        if (layerLength != page.numLayers) {
-            throw Error.InvalidFormat;
         }
         
         return page;

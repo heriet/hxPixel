@@ -58,4 +58,26 @@ class EdgImage
     {
         return pages.length;
     }
+    
+    public function getSize() : Array<Int>
+    {
+        var imageWidth = 0;
+        var imageHeight = 0;
+        
+        for (page in pages) {
+            var pageRight = page.x + page.width;
+            
+            if (imageWidth < pageRight) {
+                imageWidth = pageRight;
+            }
+            
+            var pageBottom = page.y + page.height;
+            
+            if (imageHeight < pageBottom) {
+                imageHeight = pageBottom;
+            }
+        }
+        
+        return [imageWidth, imageHeight];
+    }
 }

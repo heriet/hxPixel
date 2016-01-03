@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Heriet [http://heriet.info/].
+ * Copyright (c) heriet [http://heriet.info/].
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,42 +20,51 @@
  * THE SOFTWARE.
  */
 
-package tests;
+package hxpixel.images.psd;
 
-import haxe.unit.TestRunner;
+import hxpixel.images.color.Rgb;
+import hxpixel.images.color.Rgba;
 
-import tests.bytes.TestBits;
+@:enum
+abstract LayerType(Int) from Int to Int {
+  var Layer = 0;
+  var OpenFolder = 1;
+  var ClosedFolder = 2;
+  var BoundingSectionDivider = 3;
+}
 
-import tests.images.gif.TestGifDecoder;
-import tests.images.gal.TestGalDecoder;
-import tests.images.edg.TestEdgDecoder;
-import tests.images.psd.TestPsdDecoder;
-
-import tests.images.png.TestPngEncoder;
-
-import tests.images.psd.TestPsdConverter;
-
-class Test
+class PsdLayer
 {
-
-	static function main() 
-	{
-        var runner = new TestRunner();
+    public var parent: PsdImage;
+    
+    public var name: String;
+    public var visible: Bool;
+    public var isLocked: Bool;
+    
+    public var x: Int;
+    public var y: Int;
+    public var width: Int;
+    public var height: Int;
+    public var numChannels: Int;
+    public var blendMode: String;
+    public var opacity: Int;
+    public var clipping: Int;
+    public var flags:Int;
+    
+    public var type: LayerType;
+    
+    public var imageData: Array<Rgba>;
+    
+    public function new(parent : PsdImage) 
+    {
+        this.parent = parent;
         
-        runner.add(new TestBits());
-        
-        runner.add(new TestGifDecoder());
-        runner.add(new TestGalDecoder());
-        runner.add(new TestEdgDecoder());
-        // runner.add(new TestPngDecoder());
-        runner.add(new TestPsdDecoder());
-        
-        runner.add(new TestPngEncoder());
-        
-        runner.add(new TestPsdConverter());
-        
-        runner.run();
-        
+        visible = true;
+        imageData = [];
     }
     
+    public function getRgbaImageData() : Array<Rgba>
+    {
+        return imageData.copy();
+    }
 }

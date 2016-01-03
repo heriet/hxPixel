@@ -20,42 +20,44 @@
  * THE SOFTWARE.
  */
 
-package tests;
+package tests.images.psd;
 
-import haxe.unit.TestRunner;
+import haxe.unit.TestCase;
+import hxpixel.images.psd.PsdDecoder;
+import hxpixel.images.psd.PsdImage;
+import hxpixel.images.png.PngDecoder;
+import hxpixel.images.png.PngImage;
+import sys.FileSystem;
+import sys.io.File;
 
-import tests.bytes.TestBits;
-
-import tests.images.gif.TestGifDecoder;
-import tests.images.gal.TestGalDecoder;
-import tests.images.edg.TestEdgDecoder;
-import tests.images.psd.TestPsdDecoder;
-
-import tests.images.png.TestPngEncoder;
-
-import tests.images.psd.TestPsdConverter;
-
-class Test
+class TestPsdDecoder extends TestCase
 {
-
-	static function main() 
-	{
-        var runner = new TestRunner();
-        
-        runner.add(new TestBits());
-        
-        runner.add(new TestGifDecoder());
-        runner.add(new TestGalDecoder());
-        runner.add(new TestEdgDecoder());
-        // runner.add(new TestPngDecoder());
-        runner.add(new TestPsdDecoder());
-        
-        runner.add(new TestPngEncoder());
-        
-        runner.add(new TestPsdConverter());
-        
-        runner.run();
+    static inline var PATH_DIR_ASSET_PSD = "./samples/assets/psd/";
+    static inline var PATH_DIR_ASSET_PNG = "./samples/assets/png/";
+    
+    public function test16x16Psd()
+    {
+        var psdImage = decodePsdImage(PATH_DIR_ASSET_PSD + "16x16_16colors_001.psd");
         
     }
+    
+    function decodePsdImage(filePath: String) : PsdImage
+    {
+        var psdBytes = File.getBytes(filePath);
+        var psdImage = PsdDecoder.decode(psdBytes);
+        
+        assertEquals(16, psdImage.width);
+        assertEquals(16, psdImage.height);
+        assertEquals(ColorMode.Rgb, psdImage.colorMode);
+        
+        return psdImage;
+    }
+    
+    function removeExtension(fileName : String) : String
+    {
+        var reg = ~/\.[0-9a-zA-Z]+$/;
+        return reg.replace(fileName, "");
+    }
+    
     
 }
