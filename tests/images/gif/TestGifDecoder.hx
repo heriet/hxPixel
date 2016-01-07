@@ -26,8 +26,12 @@ import haxe.unit.TestCase;
 import hxpixel.images.gif.GifDecoder;
 import hxpixel.images.gif.GifFrame;
 import hxpixel.images.gif.GifImage;
+
 import hxpixel.images.png.PngDecoder;
 import hxpixel.images.png.PngImage;
+
+import tests.utils.TestFileUtils;
+
 import sys.FileSystem;
 import sys.io.File;
 
@@ -43,7 +47,7 @@ class TestGifDecoder extends TestCase
         
         for (fileName in gifAssetArray) {
             
-            var fileNameWithoutExt = removeExtension(fileName);
+            var fileNameWithoutExt = TestFileUtils.removeFileExtension(fileName);
             
             if(FileSystem.exists(PATH_DIR_ASSET_PNG + fileNameWithoutExt + ".png")) {
                 compareWithPngDecoder(fileNameWithoutExt);
@@ -73,12 +77,5 @@ class TestGifDecoder extends TestCase
             
         }
     }
-    
-    function removeExtension(fileName : String) : String
-    {
-        var reg = ~/\.[0-9a-zA-Z]+$/;
-        return reg.replace(fileName, "");
-    }
-    
     
 }

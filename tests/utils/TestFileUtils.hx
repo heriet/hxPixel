@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Heriet [http://heriet.info/].
+ * Copyright (c) heriet [http://heriet.info/].
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,36 +20,16 @@
  * THE SOFTWARE.
  */
 
-package tests.images.psd;
+package tests.utils;
 
-import haxe.unit.TestCase;
-import hxpixel.images.psd.PsdDecoder;
-import hxpixel.images.psd.PsdImage;
-import hxpixel.images.png.PngDecoder;
-import hxpixel.images.png.PngImage;
-import sys.FileSystem;
-import sys.io.File;
 
-class TestPsdDecoder extends TestCase
+class TestFileUtils
 {
-    static inline var PATH_DIR_ASSET_PSD = "./samples/assets/psd/";
-    static inline var PATH_DIR_ASSET_PNG = "./samples/assets/png/";
-    
-    public function test16x16Psd()
+
+    public static function removeFileExtension(fileName : String) : String
     {
-        var psdImage = decodePsdImage(PATH_DIR_ASSET_PSD + "16x16_16colors_001.psd");
-        
+        var reg = ~/\.[0-9a-zA-Z]+$/;
+        return reg.replace(fileName, "");
     }
     
-    function decodePsdImage(filePath: String) : PsdImage
-    {
-        var psdBytes = File.getBytes(filePath);
-        var psdImage = PsdDecoder.decode(psdBytes);
-        
-        assertEquals(16, psdImage.width);
-        assertEquals(16, psdImage.height);
-        assertEquals(ColorMode.Rgb, psdImage.colorMode);
-        
-        return psdImage;
-    }
 }

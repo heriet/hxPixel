@@ -31,6 +31,9 @@ import hxpixel.images.edg.EdgLayer;
 
 import hxpixel.images.png.PngDecoder;
 import hxpixel.images.png.PngImage;
+
+import tests.utils.TestFileUtils;
+
 import sys.FileSystem;
 import sys.io.File;
 
@@ -46,7 +49,7 @@ class TestEdgDecoder extends TestCase
         
         for (fileName in pngAssetArray) {
             
-            var fileNameWithoutExt = removeExtension(fileName);
+            var fileNameWithoutExt = TestFileUtils.removeFileExtension(fileName);
             
             var edg1FileName = "edg1_" + fileNameWithoutExt + ".edg";
             if(FileSystem.exists(PATH_DIR_ASSET_EDG + edg1FileName)) {
@@ -136,12 +139,5 @@ class TestEdgDecoder extends TestCase
         
         return edgImage;
     }
-    
-    function removeExtension(fileName : String) : String
-    {
-        var reg = ~/\.[0-9a-zA-Z]+$/;
-        return reg.replace(fileName, "");
-    }
-    
     
 }

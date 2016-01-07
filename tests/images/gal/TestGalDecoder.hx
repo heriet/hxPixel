@@ -31,6 +31,9 @@ import hxpixel.images.gal.GalLayer;
 
 import hxpixel.images.png.PngDecoder;
 import hxpixel.images.png.PngImage;
+
+import tests.utils.TestFileUtils;
+
 import sys.FileSystem;
 import sys.io.File;
 
@@ -45,7 +48,7 @@ class TestGalDecoder extends TestCase
         
         for (fileName in pngAssetArray) {
             
-            var fileNameWithoutExt = removeExtension(fileName);
+            var fileNameWithoutExt = TestFileUtils.removeFileExtension(fileName);
             
             var gal106FileName = "gal106_" + fileNameWithoutExt + ".gal";
             if(FileSystem.exists(PATH_DIR_ASSET_GAL + gal106FileName)) {
@@ -123,12 +126,6 @@ class TestGalDecoder extends TestCase
         var galImage = GalDecoder.decode(galBytes);
         
         return galImage;
-    }
-    
-    function removeExtension(fileName : String) : String
-    {
-        var reg = ~/\.[0-9a-zA-Z]+$/;
-        return reg.replace(fileName, "");
     }
     
     
