@@ -51,6 +51,7 @@ class EdgPage
     
     public var layers: Array<EdgLayer>;
     public var numLayers(get, never): Int;
+    public var imageData(get, never): Array<Int>;
         
     public function new(parent : EdgImage) 
     {
@@ -129,4 +130,32 @@ class EdgPage
         return layers.length;
     }
     
+    public function get_imageData() : Array<Int>
+    {
+        var indexImage = new Array<Int>();
+        var drawn = false;
+        var currerntTransparentColorIndex = parent.isEachPalette ? transparentColorIndex : parent.transparentColorIndex;
+        
+        for (i in 0 ... numLayers) {
+            var layerIndex = numLayers - 1 - i; // reverse for merge [numLayers-1 ... 0]
+            var layer = layers[layerIndex];
+            
+            if (layer.visible) {
+                
+                var layerImage = layer.imageData;
+                for (pos in 0 ... layerImage.length) {
+                    
+                    var index = layerImage[pos];
+                    
+                    if (!drawn || index != currerntTransparentColorIndex) {
+                        indexImage[pos] = index;
+                    }
+                }
+                
+                drawn = true;
+            }
+        }
+        
+        return indexImage;
+    }
 }

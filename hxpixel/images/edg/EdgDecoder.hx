@@ -320,7 +320,8 @@ class EdgDecoder
                     if (length != 1) throw Error.InvalidFormat;
                     page.isTransparent = (source.readByte() != 0);
                 case 3002:
-                    var unknown = source.readString(length);
+                    if (length != 1) throw Error.InvalidFormat;
+                    page.nextBackgroundType = source.readByte();
                 case 3003:
                     if (length != 5) throw Error.InvalidFormat;
                     page.x = source.readInt32();

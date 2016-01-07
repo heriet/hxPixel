@@ -34,6 +34,7 @@ import tests.images.psd.TestPsdDecoder;
 import tests.images.gif.TestGifEncoder;
 import tests.images.png.TestPngEncoder;
 
+import tests.images.gif.TestGifConverter;
 import tests.images.psd.TestPsdConverter;
 
 class Test
@@ -54,6 +55,7 @@ class Test
         runner.add(new TestGifEncoder());
         runner.add(new TestPngEncoder());
         
+        runner.add(new TestGifConverter());
         runner.add(new TestPsdConverter());
         
         runner.run();
