@@ -346,6 +346,8 @@ class GalDecoder
             frame.layers.push(layer);
         }
         
+        frame.layers.reverse();
+        
         return frame;
     }
     

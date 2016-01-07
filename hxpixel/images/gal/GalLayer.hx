@@ -42,7 +42,7 @@ class GalLayer
     /* Image Data */
     public var imageData: Array<Int>;
     
-public function new(parent : GalFrame) 
+    public function new(parent : GalFrame) 
     {
         this.parent = parent;
         
@@ -57,9 +57,25 @@ public function new(parent : GalFrame)
         imageData = [];
     }
     
+    public function getRbgaPalette() : Array<Rgba>
+    {
+        var rgbaPalette = new Array<Rgba>();
+        var currentPalette = parent.palette;
+        
+        for (i in 0 ... currentPalette.length) {
+            rgbaPalette[i] = currentPalette[i];
+            
+            if (isTransparent && (i == transparentColorIndex)) {
+                rgbaPalette[i].alpha = 0;
+            }
+        }
+        
+        return rgbaPalette;
+    }
+    
     public function getRgbaImageData() : Array<Rgba>
     {
-        var rgbaPalette = parent.getRbgaPalette();
+        var rgbaPalette = getRbgaPalette();
         var rgbaImageData = new Array<Rgba>();
         for (i in 0 ... imageData.length) {
             rgbaImageData[i] = rgbaPalette[imageData[i]];

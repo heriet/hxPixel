@@ -81,6 +81,7 @@ class GalFrame
     public function getRgbaImageData() : Array<Rgba>
     {
         var rgbaImage = new Array<Rgba>();
+        var drawn = false;
         
         for (i in 0 ... numLayers) {
             var layerIndex = numLayers - 1 - i; // reverse for merge [numLayers-1 ... 0]
@@ -89,8 +90,18 @@ class GalFrame
             if (layer.visible) {
                 var layerImage = layer.getRgbaImageData();
                 for (pos in 0 ... layerImage.length) {
-                    rgbaImage[pos] = layerImage[pos];
+                    var color = layerImage[pos];
+                    
+                    if (!drawn && isTransparent == false) {
+                        color.alpha = 0xFF;
+                    }
+                    
+                    if (!drawn || color.alpha != 0) {
+                        rgbaImage[pos] = color;
+                    }
                 }
+                
+                drawn = true;
             }
         }
         

@@ -23,18 +23,25 @@
 package tests.images.psd;
 
 import haxe.unit.TestCase;
+
 import hxpixel.images.edg.EdgDecoder;
 import hxpixel.images.edg.EdgImage;
+
+import hxpixel.images.gal.GalDecoder;
+import hxpixel.images.gal.GalImage;
+
 import hxpixel.images.psd.PsdConverter;
 import hxpixel.images.psd.PsdDecoder;
 import hxpixel.images.psd.PsdEncoder;
 import hxpixel.images.psd.PsdImage;
+
 import sys.FileSystem;
 import sys.io.File;
 
 class TestPsdConverter extends TestCase
 {
     static inline var PATH_DIR_ASSET_EDG = "./samples/assets/edg/";
+    static inline var PATH_DIR_ASSET_GAL = "./samples/assets/gal/";
     
     
     public function testConvertEdgSingle()
@@ -91,4 +98,33 @@ class TestPsdConverter extends TestCase
     }
     
     
+    public function testConvertGal()
+    {
+        compareGalToPsd(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal", "./testbin/enc_galx200_16x16_16colors_001.psd");
+        compareGalToPsd(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_3layer_001.gal", "./testbin/enc_galx200_16x16_16colors_3layer_001.psd");
+        compareGalToPsd(PATH_DIR_ASSET_GAL + "galx200_60x60_6frames_001.gal", "./testbin/enc_galx200_60x60_6frames_001.psd");
+    }
+    
+    function compareGalToPsd(inputPath: String, outputPath: String)
+    {
+        var galImage = decodeGalImage(inputPath);
+        var psdImage = PsdConverter.convertFromGal(galImage);
+        var psdBytes = PsdEncoder.encode(psdImage);
+        
+        var file = File.write(outputPath);
+        file.write(psdBytes);
+        file.close();
+                
+        var reDecoded = PsdDecoder.decode(psdBytes);
+        assertEquals(galImage.width, reDecoded.width);
+        assertEquals(galImage.height, reDecoded.height);
+    }
+    
+    function decodeGalImage(filePath: String) : GalImage
+    {
+        var galBytes = File.getBytes(filePath);
+        var galImage = GalDecoder.decode(galBytes);
+        
+        return galImage;
+    }
 }

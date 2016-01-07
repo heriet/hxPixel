@@ -105,9 +105,10 @@ class TestGalDecoder extends TestCase
         var galImage = decodeGalImage(PATH_DIR_ASSET_GAL + galFileName);
         var galFrame = galImage.frames[0];
         if (pngImage.isTransparent) {
-            galFrame.isTransparent = true;
+            galFrame.layers[0].isTransparent = true;
+            galFrame.layers[0].transparentColorIndex = 0;
         }
-        var galRgbaArray = galFrame.getRgbaImageData();
+        var galRgbaArray = galFrame.layers[0].getRgbaImageData();
         
         for (i in 0 ... galRgbaArray.length) {
             if (galRgbaArray[i] != pngRgbaArray[i]) {
