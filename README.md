@@ -16,4 +16,5 @@ Decoder
 Encoder
 -------
 * PngEncoder (Incomplete)
+* GifEncoder
 * PsdEncoder (Incomplete)
