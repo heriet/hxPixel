@@ -132,6 +132,21 @@ abstract Bits(Array<Bool>)
         return bits;
     }
     
+    @:op(A == B) static public function equals( a:Bits, b:Bits ) : Bool
+    {
+        if (a.length != b.length) {
+            return false;
+        }
+        
+        for(i in 0 ... a.length) {
+            if (a[i] != b[i]) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     public static function marge(a:Bits, b:Bits) : Bits
     {
         var bits = new Bits();

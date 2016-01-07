@@ -31,6 +31,7 @@ import tests.images.gal.TestGalDecoder;
 import tests.images.edg.TestEdgDecoder;
 import tests.images.psd.TestPsdDecoder;
 
+import tests.images.gif.TestGifEncoder;
 import tests.images.png.TestPngEncoder;
 
 import tests.images.psd.TestPsdConverter;
@@ -50,6 +51,7 @@ class Test
         // runner.add(new TestPngDecoder());
         runner.add(new TestPsdDecoder());
         
+        runner.add(new TestGifEncoder());
         runner.add(new TestPngEncoder());
         
         runner.add(new TestPsdConverter());

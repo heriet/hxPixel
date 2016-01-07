@@ -253,7 +253,9 @@ class GifDecoder
         var readedPixel = 0;
         
         while (readedPixel < pixelNum) {
-            var code = bitReader.readIntBits(codeLength);
+            var code = bitReader.bitsAvailable() >= codeLength 
+                     ? bitReader.readIntBits(codeLength)
+                     : bitReader.readIntBits(bitReader.bitsAvailable());
             
             if (code == clearCode) {
                 dictionary = createInitialDictionary(lzwMinimumCodeSize);
@@ -261,6 +263,7 @@ class GifDecoder
                 registerNum = endCode + 1;
                 
                 bitWriter.writeBits(prefix);
+                readedPixel = Std.int(bitWriter.length / lzwMinimumCodeSize);
                 prefix = bitReader.readBits(codeLength).subBits(0, lzwMinimumCodeSize);
                 
                 continue;
@@ -273,7 +276,7 @@ class GifDecoder
                 dictionary[registerNum] = suffix;
                 registerNum++;
                 
-                if (registerNum >= (1 << codeLength) && codeLength <= 12) {
+                if (registerNum >= (1 << codeLength) && codeLength < 12) {
                     codeLength++;
                 }
                 
@@ -286,7 +289,7 @@ class GifDecoder
                 dictionary[registerNum] = prefix + suffix.subBits(0, lzwMinimumCodeSize);
                 registerNum++;
                 
-                if (registerNum >= (1 << codeLength) && codeLength <= 12) {
+                if (registerNum >= (1 << codeLength) && codeLength < 12) {
                     codeLength++;
                 }
                 
@@ -300,8 +303,12 @@ class GifDecoder
         
         var bytes = bitWriter.getBytes();
         var decodedBitReader = new BitReader(bytes);
-        for(i in 0 ... pixelNum) {
-            gifFrameInfo.imageData[i] = decodedBitReader.readIntBits(lzwMinimumCodeSize);
+        for (i in 0 ... pixelNum) {
+            var color = decodedBitReader.bitsAvailable() >= lzwMinimumCodeSize 
+                        ? decodedBitReader.readIntBits(lzwMinimumCodeSize)
+                        : decodedBitReader.readIntBits(decodedBitReader.bitsAvailable());
+                        
+            gifFrameInfo.imageData[i] = color;
         }
     }
     
