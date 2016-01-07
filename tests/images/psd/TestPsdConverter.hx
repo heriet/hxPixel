@@ -44,49 +44,28 @@ class TestPsdConverter extends TestCase
     static inline var PATH_DIR_ASSET_GAL = "./samples/assets/gal/";
     
     
-    public function testConvertEdgSingle()
+    public function testConvertEdg()
     {
-        var edgImage = decodeEdgImage(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg");
-        var psdImage = PsdConverter.convertFromEdg(edgImage);
-        var psdBytes = PsdEncoder.encode(psdImage);
-        
-        var file = File.write("./testbin/enc_16x16_16colors_001.psd");
-        file.writeBytes(psdBytes, 0, psdBytes.length);
-        file.close();
-                
-        var reDecoded = PsdDecoder.decode(psdBytes);
-        assertEquals(16, reDecoded.width);
-        assertEquals(16, reDecoded.height);
+        compareEdgToPsd(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg", "./testbin/enc_edg2_16x16_16colors_001.psd");
+        compareEdgToPsd(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_3layer_001.edg", "./testbin/enc_edg2_16x16_16colors_3layer_001.psd");
+        compareEdgToPsd(PATH_DIR_ASSET_EDG + "edg2_60x60_6frames_001.edg", "./testbin/enc_edg2_60x60_6frames_001.psd");
     }
     
-    public function testConvertEdgLayers()
+    public function compareEdgToPsd(inputPath: String, outputPath: String)
     {
-        var edgImage = decodeEdgImage(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_3layer_001.edg");
+        var edgImage = decodeEdgImage(inputPath);
         var psdImage = PsdConverter.convertFromEdg(edgImage);
         var psdBytes = PsdEncoder.encode(psdImage);
         
-        var file = File.write("./testbin/enc_16x16_16colors_3layer_001.psd");
-        file.writeBytes(psdBytes, 0, psdBytes.length);
+        var file = File.write(outputPath);
+        file.write(psdBytes);
         file.close();
-                
-        var reDecoded = PsdDecoder.decode(psdBytes);
-        assertEquals(16, reDecoded.width);
-        assertEquals(16, reDecoded.height);
-    }
-    
-    public function testConvertEdgPages()
-    {
-        var edgImage = decodeEdgImage(PATH_DIR_ASSET_EDG + "edg2_60x60_6frames_001.edg");
-        var psdImage = PsdConverter.convertFromEdg(edgImage);
-        var psdBytes = PsdEncoder.encode(psdImage);
         
-        var file = File.write("./testbin/enc_60x60_6frames_001.psd");
-        file.writeBytes(psdBytes, 0, psdBytes.length);
-        file.close();
+        var size = edgImage.getSize();
                 
         var reDecoded = PsdDecoder.decode(psdBytes);
-        assertEquals(60, reDecoded.width);
-        assertEquals(60, reDecoded.height);
+        assertEquals(size[0], reDecoded.width);
+        assertEquals(size[1], reDecoded.height);
     }
     
     function decodeEdgImage(filePath: String) : EdgImage
