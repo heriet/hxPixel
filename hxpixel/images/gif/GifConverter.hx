@@ -106,7 +106,7 @@ class GifConverter
         gifFrame.userInputFlag = false;
         gifFrame.transparentColorFlag = edgPage.isTransparent;
         gifFrame.delayTime = Std.int(edgPage.wait / 60);
-        gifFrame.transparentColorIndex = edgPage.transparentColorIndex;
+        gifFrame.transparentColorIndex = edgPage.isTransparent ? edgPage.transparentColorIndex : 0;
         
         gifFrame.imageLeftPosition = edgPage.x;
         gifFrame.imageTopPosition = edgPage.y;
@@ -136,4 +136,80 @@ class GifConverter
         return gifFrame;
     }
     
+    
+    public static function convertFromGal(galImage: GalImage): GifImage
+    {
+        var gifImage = new GifImage();
+        
+        gifImage.logicalScreenWidth = galImage.width;
+        gifImage.logicalScreenHeight = galImage.height;
+        
+        gifImage.version = Version.Gif89a;
+        gifImage.colorResolution = calcGalColorResolution(galImage) - 1;
+        gifImage.sortFlag = false;
+        
+        var firstFrame = galImage.frames[0];
+        var palette = firstFrame.palette;
+            
+        gifImage.sizeOfGlobalTable = calcExponent(palette.length) - 1;
+        var tableLength = 1 << (gifImage.sizeOfGlobalTable + 1);
+        for (i in 0 ... tableLength) {
+            gifImage.globalColorTable[i] = i < palette.length ? palette[i] : 0;
+        }
+        gifImage.globalColorTableFlag = true;
+        
+        gifImage.backgroundColorIndex = firstFrame.isTransparent ? firstFrame.transparentColorIndex : 0;
+        
+        gifImage.pixelAspectRaito = 0;
+        gifImage.animationLoopCount = 0;
+        
+        for (galFrame in galImage.frames) {
+            var gifFrame = createFrameFromGalFrame(galFrame, gifImage);
+            gifImage.frameList.push(gifFrame);
+        }
+        
+        return gifImage;
+    }
+    
+    static function createFrameFromGalFrame(galFrame: GalFrame, gifImage: GifImage): GifFrame
+    {
+        var gifFrame = new GifFrame(gifImage);
+        
+        gifFrame.disposalMothod = galFrame.nextBackgroundType;
+        gifFrame.userInputFlag = false;
+        gifFrame.transparentColorFlag = galFrame.isTransparent;
+        gifFrame.delayTime = Std.int(galFrame.wait / 10);
+        gifFrame.transparentColorIndex = galFrame.isTransparent ? galFrame.transparentColorIndex : 0;
+        
+        gifFrame.imageLeftPosition = 0;
+        gifFrame.imageTopPosition = 0;
+        gifFrame.imageWidth = galFrame.width;
+        gifFrame.imageHeight = galFrame.height;
+        
+        gifFrame.localColorTableFlag = false;
+        gifFrame.localColorTable = [];
+        gifFrame.sizeOfLocalColorTable = 0;
+        
+        gifFrame.interlaceFlag = false;
+        gifFrame.sortFlag = false;
+        
+        gifFrame.imageData = galFrame.imageData;
+        
+        return gifFrame;
+    }
+    
+    static function calcGalColorResolution(galImage: GalImage): Int
+    {
+        var paletteMax = 0;
+        
+        for (galFrame in galImage.frames) {
+            var palette = galFrame.palette;
+            
+            if (paletteMax < palette.length) {
+                paletteMax = palette.length;
+            }
+        }
+        
+        return calcExponent(paletteMax);
+    }
 }

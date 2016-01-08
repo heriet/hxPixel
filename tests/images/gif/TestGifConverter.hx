@@ -43,8 +43,7 @@ class TestGifConverter extends TestCase
 {
     static inline var PATH_DIR_ASSET_EDG = "./samples/assets/edg/";
     static inline var PATH_DIR_ASSET_GAL = "./samples/assets/gal/";
-    
-    
+
     public function testConvertEdg()
     {
         compareEdgToGif(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg", "./testbin/enc_edg2_16x16_16colors_001.gif");
@@ -75,5 +74,36 @@ class TestGifConverter extends TestCase
         var edgImage = EdgDecoder.decode(edgBytes);
         
         return edgImage;
+    }
+    
+    
+    public function testConvertGal()
+    {
+        compareGalToGif(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal", "./testbin/enc_galx200_16x16_16colors_001.gif");
+        compareGalToGif(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_3layer_001.gal", "./testbin/enc_galx200_16x16_16colors_3layer_001.gif");
+        compareGalToGif(PATH_DIR_ASSET_GAL + "galx200_60x60_6frames_001.gal", "./testbin/enc_galx200_60x60_6frames_001.gif");
+    }
+    
+    public function compareGalToGif(inputPath: String, outputPath: String)
+    {
+        var galImage = decodeGalImage(inputPath);
+        var gifImage = GifConverter.convertFromGal(galImage);
+        var gifBytes = GifEncoder.encode(gifImage);
+        
+        var file = File.write(outputPath);
+        file.write(gifBytes);
+        file.close();
+                
+        var reDecoded = GifDecoder.decode(gifBytes);
+        assertEquals(galImage.width, reDecoded.logicalScreenWidth);
+        assertEquals(galImage.height, reDecoded.logicalScreenHeight);
+    }
+    
+    function decodeGalImage(filePath: String) : GalImage
+    {
+        var galBytes = File.getBytes(filePath);
+        var galImage = GalDecoder.decode(galBytes);
+        
+        return galImage;
     }
 }
