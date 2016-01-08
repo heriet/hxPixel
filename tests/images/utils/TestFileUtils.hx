@@ -27,29 +27,26 @@ import haxe.unit.TestCase;
 import hxpixel.images.file.PixelArtFileType;
 import hxpixel.images.utils.FileUtils;
 
+import tests.utils.PathUtils;
+
 import sys.io.File;
 
 class TestFileUtils extends TestCase
 {
-    static inline var PATH_DIR_ASSET_EDG = "./samples/assets/edg/";
-    static inline var PATH_DIR_ASSET_GAL = "./samples/assets/gal/";
-    static inline var PATH_DIR_ASSET_GIF = "./samples/assets/gif/";
-    static inline var PATH_DIR_ASSET_PNG = "./samples/assets/png/";
-    static inline var PATH_DIR_ASSET_PSD = "./samples/assets/psd/";
     
     public function testDistinctPixelArtFileType()
     {
-        assertEquals(PixelArtFileType.Edge, FileUtils.distinctPixelArtFileType(File.getBytes(PATH_DIR_ASSET_EDG + "edg1_16x16_16colors_001.edg")));
-        assertEquals(PixelArtFileType.Edge, FileUtils.distinctPixelArtFileType(File.getBytes(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg")));
+        assertEquals(PixelArtFileType.Edge, FileUtils.distinctPixelArtFileType(File.getBytes(PathUtils.PATH_DIR_ASSET_EDG + "edg1_16x16_16colors_001.edg")));
+        assertEquals(PixelArtFileType.Edge, FileUtils.distinctPixelArtFileType(File.getBytes(PathUtils.PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg")));
         
-        assertEquals(PixelArtFileType.Gale, FileUtils.distinctPixelArtFileType(File.getBytes(PATH_DIR_ASSET_GAL + "gal106_16x16_16colors_001.gal")));
-        assertEquals(PixelArtFileType.Gale, FileUtils.distinctPixelArtFileType(File.getBytes(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal")));
+        assertEquals(PixelArtFileType.Gale, FileUtils.distinctPixelArtFileType(File.getBytes(PathUtils.PATH_DIR_ASSET_GAL + "gal106_16x16_16colors_001.gal")));
+        assertEquals(PixelArtFileType.Gale, FileUtils.distinctPixelArtFileType(File.getBytes(PathUtils.PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal")));
         
-        assertEquals(PixelArtFileType.Gif, FileUtils.distinctPixelArtFileType(File.getBytes(PATH_DIR_ASSET_GIF + "16x16_16colors_001.gif")));
+        assertEquals(PixelArtFileType.Gif, FileUtils.distinctPixelArtFileType(File.getBytes(PathUtils.PATH_DIR_ASSET_GIF + "16x16_16colors_001.gif")));
         
-        assertEquals(PixelArtFileType.Png, FileUtils.distinctPixelArtFileType(File.getBytes(PATH_DIR_ASSET_PNG + "16x16_16colors_001.png")));
+        assertEquals(PixelArtFileType.Png, FileUtils.distinctPixelArtFileType(File.getBytes(PathUtils.PATH_DIR_ASSET_PNG + "16x16_16colors_001.png")));
         
-        assertEquals(PixelArtFileType.Psd, FileUtils.distinctPixelArtFileType(File.getBytes(PATH_DIR_ASSET_PSD + "16x16_16colors_001.psd")));
+        assertEquals(PixelArtFileType.Psd, FileUtils.distinctPixelArtFileType(File.getBytes(PathUtils.PATH_DIR_ASSET_PSD + "16x16_16colors_001.psd")));
     }
     
 }

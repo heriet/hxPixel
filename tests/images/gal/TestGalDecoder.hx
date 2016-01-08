@@ -32,31 +32,29 @@ import hxpixel.images.gal.GalLayer;
 import hxpixel.images.png.PngDecoder;
 import hxpixel.images.png.PngImage;
 
-import tests.utils.TestFileUtils;
+import tests.utils.PathUtils;
 
 import sys.FileSystem;
 import sys.io.File;
 
 class TestGalDecoder extends TestCase
 {
-    static inline var PATH_DIR_ASSET_GAL = "./samples/assets/gal/";
-    static inline var PATH_DIR_ASSET_PNG = "./samples/assets/png/";
     
     public function testDecode()
     {
-        var pngAssetArray = FileSystem.readDirectory(PATH_DIR_ASSET_PNG);
+        var pngAssetArray = FileSystem.readDirectory(PathUtils.PATH_DIR_ASSET_PNG);
         
         for (fileName in pngAssetArray) {
             
-            var fileNameWithoutExt = TestFileUtils.removeFileExtension(fileName);
+            var fileNameWithoutExt = PathUtils.removeFileExtension(fileName);
             
             var gal106FileName = "gal106_" + fileNameWithoutExt + ".gal";
-            if(FileSystem.exists(PATH_DIR_ASSET_GAL + gal106FileName)) {
+            if(FileSystem.exists(PathUtils.PATH_DIR_ASSET_GAL + gal106FileName)) {
                 compareWithPngDecoder(fileName, gal106FileName);
             }
             
             var galx200FileName = "galx200_" + fileNameWithoutExt + ".gal";
-            if(FileSystem.exists(PATH_DIR_ASSET_GAL + galx200FileName)) {
+            if(FileSystem.exists(PathUtils.PATH_DIR_ASSET_GAL + galx200FileName)) {
                 compareWithPngDecoder(fileName, galx200FileName);
             }
         }
@@ -64,7 +62,7 @@ class TestGalDecoder extends TestCase
     
     public function testGale106()
     {
-        var galImage = decodeGalImage(PATH_DIR_ASSET_GAL + "gal106_16x16_16colors_001.gal");
+        var galImage = decodeGalImage(PathUtils.PATH_DIR_ASSET_GAL + "gal106_16x16_16colors_001.gal");
         
         assertEquals(Version.Gale106, galImage.version);
         assertEquals(1, galImage.numFrames);
@@ -81,7 +79,7 @@ class TestGalDecoder extends TestCase
     
     public function testGaleX200()
     {
-        var galImage = decodeGalImage(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal");
+        var galImage = decodeGalImage(PathUtils.PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal");
         
         assertEquals(Version.GaleX200, galImage.version);
         assertEquals(1, galImage.numFrames);
@@ -98,11 +96,11 @@ class TestGalDecoder extends TestCase
     
     function compareWithPngDecoder(pngFileName: String, galFileName: String)
     {
-        var pngBytes = File.getBytes(PATH_DIR_ASSET_PNG + pngFileName);
+        var pngBytes = File.getBytes(PathUtils.PATH_DIR_ASSET_PNG + pngFileName);
         var pngImage = PngDecoder.decode(pngBytes);
         var pngRgbaArray = pngImage.getRgbaImageData();
         
-        var galImage = decodeGalImage(PATH_DIR_ASSET_GAL + galFileName);
+        var galImage = decodeGalImage(PathUtils.PATH_DIR_ASSET_GAL + galFileName);
         var galFrame = galImage.frames[0];
         if (pngImage.isTransparent) {
             galFrame.layers[0].isTransparent = true;

@@ -30,26 +30,22 @@ import hxpixel.images.gif.GifImage;
 import hxpixel.images.png.PngDecoder;
 import hxpixel.images.png.PngImage;
 
-import tests.utils.TestFileUtils;
+import tests.utils.PathUtils;
 
 import sys.FileSystem;
 import sys.io.File;
 
 class TestGifDecoder extends TestCase
 {
-    static inline var PATH_DIR_ASSET_GIF = "./samples/assets/gif/";
-    static inline var PATH_DIR_ASSET_PNG = "./samples/assets/png/";
-    
-    
     public function testDecode()
     {
-        var gifAssetArray = FileSystem.readDirectory(PATH_DIR_ASSET_GIF);
+        var gifAssetArray = FileSystem.readDirectory(PathUtils.PATH_DIR_ASSET_GIF);
         
         for (fileName in gifAssetArray) {
             
-            var fileNameWithoutExt = TestFileUtils.removeFileExtension(fileName);
+            var fileNameWithoutExt = PathUtils.removeFileExtension(fileName);
             
-            if(FileSystem.exists(PATH_DIR_ASSET_PNG + fileNameWithoutExt + ".png")) {
+            if(FileSystem.exists(PathUtils.PATH_DIR_ASSET_PNG + fileNameWithoutExt + ".png")) {
                 compareWithPngDecoder(fileNameWithoutExt);
             }
         }
@@ -57,12 +53,12 @@ class TestGifDecoder extends TestCase
     
     function compareWithPngDecoder(fileNameWithoutExt : String)
     {
-        var gifBytes = File.getBytes(PATH_DIR_ASSET_GIF + fileNameWithoutExt + ".gif");
+        var gifBytes = File.getBytes(PathUtils.PATH_DIR_ASSET_GIF + fileNameWithoutExt + ".gif");
         var gifInfo = GifDecoder.decode(gifBytes);
         var gifFrameInfo = gifInfo.frameList[0];
         var gifRgbaArray = gifFrameInfo.getRgbaImageData();
         
-        var pngBytes = File.getBytes(PATH_DIR_ASSET_PNG + fileNameWithoutExt + ".png");
+        var pngBytes = File.getBytes(PathUtils.PATH_DIR_ASSET_PNG + fileNameWithoutExt + ".png");
         var pngInfo = PngDecoder.decode(pngBytes);
         var pngRgbaArray = pngInfo.getRgbaImageData();
         

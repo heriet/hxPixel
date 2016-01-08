@@ -27,17 +27,18 @@ import hxpixel.images.psd.PsdDecoder;
 import hxpixel.images.psd.PsdImage;
 import hxpixel.images.png.PngDecoder;
 import hxpixel.images.png.PngImage;
+
+import tests.utils.PathUtils;
+
 import sys.FileSystem;
 import sys.io.File;
 
 class TestPsdDecoder extends TestCase
 {
-    static inline var PATH_DIR_ASSET_PSD = "./samples/assets/psd/";
-    static inline var PATH_DIR_ASSET_PNG = "./samples/assets/png/";
     
     public function test16x16Psd()
     {
-        var psdImage = decodePsdImage(PATH_DIR_ASSET_PSD + "16x16_16colors_001.psd");
+        var psdImage = decodePsdImage(PathUtils.PATH_DIR_ASSET_PSD + "16x16_16colors_001.psd");
         
     }
     

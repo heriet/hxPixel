@@ -36,19 +36,18 @@ import hxpixel.images.gif.GifEncoder;
 import hxpixel.images.gif.GifImage;
 import hxpixel.images.gif.GifFrame;
 
+import tests.utils.PathUtils;
+
 import sys.FileSystem;
 import sys.io.File;
 
 class TestGifConverter extends TestCase
 {
-    static inline var PATH_DIR_ASSET_EDG = "./samples/assets/edg/";
-    static inline var PATH_DIR_ASSET_GAL = "./samples/assets/gal/";
-
     public function testConvertEdg()
     {
-        compareEdgToGif(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg", "./testbin/enc_edg2_16x16_16colors_001.gif");
-        compareEdgToGif(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_3layer_001.edg", "./testbin/enc_edg2_16x16_16colors_3layer_001.gif");
-        compareEdgToGif(PATH_DIR_ASSET_EDG + "edg2_60x60_6frames_001.edg", "./testbin/enc_edg2_60x60_6frames_001.gif");
+        compareEdgToGif(PathUtils.PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg", "./testbin/enc_edg2_16x16_16colors_001.gif");
+        compareEdgToGif(PathUtils.PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_3layer_001.edg", "./testbin/enc_edg2_16x16_16colors_3layer_001.gif");
+        compareEdgToGif(PathUtils.PATH_DIR_ASSET_EDG + "edg2_60x60_6frames_001.edg", "./testbin/enc_edg2_60x60_6frames_001.gif");
     }
     
     public function compareEdgToGif(inputPath: String, outputPath: String)
@@ -79,9 +78,9 @@ class TestGifConverter extends TestCase
     
     public function testConvertGal()
     {
-        compareGalToGif(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal", "./testbin/enc_galx200_16x16_16colors_001.gif");
-        compareGalToGif(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_3layer_001.gal", "./testbin/enc_galx200_16x16_16colors_3layer_001.gif");
-        compareGalToGif(PATH_DIR_ASSET_GAL + "galx200_60x60_6frames_001.gal", "./testbin/enc_galx200_60x60_6frames_001.gif");
+        compareGalToGif(PathUtils.PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal", "./testbin/enc_galx200_16x16_16colors_001.gif");
+        compareGalToGif(PathUtils.PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_3layer_001.gal", "./testbin/enc_galx200_16x16_16colors_3layer_001.gif");
+        compareGalToGif(PathUtils.PATH_DIR_ASSET_GAL + "galx200_60x60_6frames_001.gal", "./testbin/enc_galx200_60x60_6frames_001.gif");
     }
     
     public function compareGalToGif(inputPath: String, outputPath: String)

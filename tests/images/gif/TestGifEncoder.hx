@@ -29,20 +29,19 @@ import hxpixel.images.gif.GifDecoder;
 import hxpixel.images.gif.GifFrame;
 import hxpixel.images.gif.GifImage;
 
+import tests.utils.PathUtils;
+
 import sys.FileSystem;
 import sys.io.File;
 
 class TestGifEncoder extends TestCase
-{
-    static inline var PATH_DIR_ASSET_GIF = "./samples/assets/gif/";
-    
-    
+{   
     public function testEncode()
     {
-        compareGifEncode(PATH_DIR_ASSET_GIF + "16x16_16colors_001.gif", "./testbin/enc_16x16_16colors_001.gif");
-        compareGifEncode(PATH_DIR_ASSET_GIF + "48x48_32colors_001.gif", "./testbin/enc_48x48_32colors_001.gif");
-        compareGifEncode(PATH_DIR_ASSET_GIF + "60x60_6frames_001.gif", "./testbin/enc_60x60_6frames_001.gif");
-        compareGifEncode(PATH_DIR_ASSET_GIF + "161x237_64colors_001.gif", "./testbin/enc_161x237_64colors_001.gif");
+        compareGifEncode(PathUtils.PATH_DIR_ASSET_GIF + "16x16_16colors_001.gif", "./testbin/enc_16x16_16colors_001.gif");
+        compareGifEncode(PathUtils.PATH_DIR_ASSET_GIF + "48x48_32colors_001.gif", "./testbin/enc_48x48_32colors_001.gif");
+        compareGifEncode(PathUtils.PATH_DIR_ASSET_GIF + "60x60_6frames_001.gif", "./testbin/enc_60x60_6frames_001.gif");
+        compareGifEncode(PathUtils.PATH_DIR_ASSET_GIF + "161x237_64colors_001.gif", "./testbin/enc_161x237_64colors_001.gif");
     }
     
     function compareGifEncode(inputPath: String, outputPath: String)

@@ -35,20 +35,19 @@ import hxpixel.images.psd.PsdDecoder;
 import hxpixel.images.psd.PsdEncoder;
 import hxpixel.images.psd.PsdImage;
 
+import tests.utils.PathUtils;
+
 import sys.FileSystem;
 import sys.io.File;
 
 class TestPsdConverter extends TestCase
 {
-    static inline var PATH_DIR_ASSET_EDG = "./samples/assets/edg/";
-    static inline var PATH_DIR_ASSET_GAL = "./samples/assets/gal/";
-    
     
     public function testConvertEdg()
     {
-        compareEdgToPsd(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg", "./testbin/enc_edg2_16x16_16colors_001.psd");
-        compareEdgToPsd(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_3layer_001.edg", "./testbin/enc_edg2_16x16_16colors_3layer_001.psd");
-        compareEdgToPsd(PATH_DIR_ASSET_EDG + "edg2_60x60_6frames_001.edg", "./testbin/enc_edg2_60x60_6frames_001.psd");
+        compareEdgToPsd(PathUtils.PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg", "./testbin/enc_edg2_16x16_16colors_001.psd");
+        compareEdgToPsd(PathUtils.PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_3layer_001.edg", "./testbin/enc_edg2_16x16_16colors_3layer_001.psd");
+        compareEdgToPsd(PathUtils.PATH_DIR_ASSET_EDG + "edg2_60x60_6frames_001.edg", "./testbin/enc_edg2_60x60_6frames_001.psd");
     }
     
     public function compareEdgToPsd(inputPath: String, outputPath: String)
@@ -79,9 +78,9 @@ class TestPsdConverter extends TestCase
     
     public function testConvertGal()
     {
-        compareGalToPsd(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal", "./testbin/enc_galx200_16x16_16colors_001.psd");
-        compareGalToPsd(PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_3layer_001.gal", "./testbin/enc_galx200_16x16_16colors_3layer_001.psd");
-        compareGalToPsd(PATH_DIR_ASSET_GAL + "galx200_60x60_6frames_001.gal", "./testbin/enc_galx200_60x60_6frames_001.psd");
+        compareGalToPsd(PathUtils.PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_001.gal", "./testbin/enc_galx200_16x16_16colors_001.psd");
+        compareGalToPsd(PathUtils.PATH_DIR_ASSET_GAL + "galx200_16x16_16colors_3layer_001.gal", "./testbin/enc_galx200_16x16_16colors_3layer_001.psd");
+        compareGalToPsd(PathUtils.PATH_DIR_ASSET_GAL + "galx200_60x60_6frames_001.gal", "./testbin/enc_galx200_60x60_6frames_001.psd");
     }
     
     function compareGalToPsd(inputPath: String, outputPath: String)

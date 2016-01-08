@@ -32,32 +32,29 @@ import hxpixel.images.edg.EdgLayer;
 import hxpixel.images.png.PngDecoder;
 import hxpixel.images.png.PngImage;
 
-import tests.utils.TestFileUtils;
+import tests.utils.PathUtils;
 
 import sys.FileSystem;
 import sys.io.File;
 
 class TestEdgDecoder extends TestCase
-{
-    static inline var PATH_DIR_ASSET_EDG = "./samples/assets/edg/";
-    static inline var PATH_DIR_ASSET_PNG = "./samples/assets/png/";
-    
+{   
     
     public function testDecode()
     {
-        var pngAssetArray = FileSystem.readDirectory(PATH_DIR_ASSET_PNG);
+        var pngAssetArray = FileSystem.readDirectory(PathUtils.PATH_DIR_ASSET_PNG);
         
         for (fileName in pngAssetArray) {
             
-            var fileNameWithoutExt = TestFileUtils.removeFileExtension(fileName);
+            var fileNameWithoutExt = PathUtils.removeFileExtension(fileName);
             
             var edg1FileName = "edg1_" + fileNameWithoutExt + ".edg";
-            if(FileSystem.exists(PATH_DIR_ASSET_EDG + edg1FileName)) {
+            if(FileSystem.exists(PathUtils.PATH_DIR_ASSET_EDG + edg1FileName)) {
                 compareWithPngDecoder(fileName, edg1FileName);
             }
             
             var edg2FileName = "edg2_" + fileNameWithoutExt + ".edg";
-            if(FileSystem.exists(PATH_DIR_ASSET_EDG + edg2FileName)) {
+            if(FileSystem.exists(PathUtils.PATH_DIR_ASSET_EDG + edg2FileName)) {
                 compareWithPngDecoder(fileName, edg2FileName);
             }
         }
@@ -65,7 +62,7 @@ class TestEdgDecoder extends TestCase
     
     public function testEdge1()
     {
-        var edgImage = decodeEdgImage(PATH_DIR_ASSET_EDG + "edg1_16x16_16colors_001.edg");
+        var edgImage = decodeEdgImage(PathUtils.PATH_DIR_ASSET_EDG + "edg1_16x16_16colors_001.edg");
         
         assertEquals(Version.Edge1, edgImage.version);
         assertEquals(1, edgImage.numPages);
@@ -86,7 +83,7 @@ class TestEdgDecoder extends TestCase
     
     public function testEdge2()
     {
-        var edgImage = decodeEdgImage(PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg");
+        var edgImage = decodeEdgImage(PathUtils.PATH_DIR_ASSET_EDG + "edg2_16x16_16colors_001.edg");
         
         assertEquals(Version.Edge2, edgImage.version);
         assertEquals(1, edgImage.numPages);
@@ -109,11 +106,11 @@ class TestEdgDecoder extends TestCase
     
     function compareWithPngDecoder(pngFileName: String, edgFileName: String)
     {
-        var pngBytes = File.getBytes(PATH_DIR_ASSET_PNG + pngFileName);
+        var pngBytes = File.getBytes(PathUtils.PATH_DIR_ASSET_PNG + pngFileName);
         var pngImage = PngDecoder.decode(pngBytes);
         var pngRgbaArray = pngImage.getRgbaImageData();
         
-        var edgImage = decodeEdgImage(PATH_DIR_ASSET_EDG + edgFileName);
+        var edgImage = decodeEdgImage(PathUtils.PATH_DIR_ASSET_EDG + edgFileName);
         var edgPage = edgImage.pages[0];
         if (pngImage.isTransparent) {
             edgPage.isTransparent = true;

@@ -26,17 +26,17 @@ import haxe.unit.TestCase;
 import hxpixel.images.png.PngDecoder;
 import hxpixel.images.png.PngEncoder;
 import hxpixel.images.png.PngImage;
+
+import tests.utils.PathUtils;
+
 import sys.FileSystem;
 import sys.io.File;
 
 class TestPngEncoder extends TestCase
 {
-    static inline var PATH_DIR_ASSET_PNG = "./samples/assets/png/";
-    
-    
     public function testEncode()
     {
-        var pngImage = decodePngImage(PATH_DIR_ASSET_PNG + "48x48_32colors_001.png");
+        var pngImage = decodePngImage(PathUtils.PATH_DIR_ASSET_PNG + "48x48_32colors_001.png");
         
         var pngBytes = PngEncoder.encode(pngImage);
         

@@ -23,8 +23,13 @@
 package tests.utils;
 
 
-class TestFileUtils
+class PathUtils
 {
+    public static inline var PATH_DIR_ASSET_EDG = "./samples/assets/edg/";
+    public static inline var PATH_DIR_ASSET_GAL = "./samples/assets/gal/";
+    public static inline var PATH_DIR_ASSET_GIF = "./samples/assets/gif/";
+    public static inline var PATH_DIR_ASSET_PNG = "./samples/assets/png/";
+    public static inline var PATH_DIR_ASSET_PSD = "./samples/assets/psd/";
 
     public static function removeFileExtension(fileName : String) : String
     {
