@@ -38,30 +38,30 @@ abstract Rgb(Rgba)
         return this.red;
     }
     
-	inline function set_red( red : Int ) : Int
+    inline function set_red( red : Int ) : Int
     {
         return (this.red = red);
-	}
+    }
     
     inline function get_green() : Int
     {
         return this.green;
     }
     
-	inline function set_green( green : Int ) : Int
+    inline function set_green( green : Int ) : Int
     {
         return (this.green = green);
-	}
+    }
     
     inline function get_blue() : Int
     {
         return this.blue;
     }
     
-	inline function set_blue( blue : Int ) : Int
+    inline function set_blue( blue : Int ) : Int
     {
         return (this.blue = blue);
-	}
+    }
     
     public static function fromComponents( red : Int, green : Int, blue : Int ) : Rgb
     {

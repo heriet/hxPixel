@@ -35,12 +35,12 @@ import hxpixel.images.png.PngDecoder;
 
 class Main 
 {
-	
-	static function main() 
-	{
-		var stage = Lib.current.stage;
-		stage.scaleMode = StageScaleMode.NO_SCALE;
-		stage.align = StageAlign.TOP_LEFT;
+    
+    static function main() 
+    {
+        var stage = Lib.current.stage;
+        stage.scaleMode = StageScaleMode.NO_SCALE;
+        stage.align = StageAlign.TOP_LEFT;
         
         var movieClip:MovieClip = flash.Lib.current;
         
@@ -59,7 +59,7 @@ class Main
         pngImage.y = 16;
         pngImage.scaleX = 10.0;
         pngImage.scaleY = 10.0;
-	}
+    }
     
     static function createPngImage(bytes : Bytes)
     {

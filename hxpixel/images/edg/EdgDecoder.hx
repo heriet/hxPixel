@@ -124,8 +124,8 @@ class EdgDecoder
     {
         var palette = new Array<Rgb>();
         for (i in 0 ... 256) {
-			palette[i] = ColorUtils.readRgb(input);
-		}
+            palette[i] = ColorUtils.readRgb(input);
+        }
         edgImage.paletteBank.push(palette);
     }
     
@@ -149,20 +149,20 @@ class EdgDecoder
         var i = 0;
         while (i <= srcMax) {
             if (comp < compressMax && i == positions[comp]) {
-				for (j in 0 ... lengths[comp] ) {
-					if (dest + j < resolution) {
-						layer.imageData[dest + j] = values[comp];
-					}
-				}
-				dest += lengths[comp];
-				comp++;
-				continue;
-			}
+                for (j in 0 ... lengths[comp] ) {
+                    if (dest + j < resolution) {
+                        layer.imageData[dest + j] = values[comp];
+                    }
+                }
+                dest += lengths[comp];
+                comp++;
+                continue;
+            }
             
-			if (i < srcMax) {
-				layer.imageData[dest] = input.readByte();
-				dest++;
-			}
+            if (i < srcMax) {
+                layer.imageData[dest] = input.readByte();
+                dest++;
+            }
             
             i++;
         }

@@ -40,8 +40,8 @@ import tests.images.psd.TestPsdConverter;
 class Test
 {
 
-	static function main() 
-	{
+    static function main() 
+    {
         var runner = new TestRunner();
         
         runner.add(new TestBits());

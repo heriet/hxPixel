@@ -221,14 +221,14 @@ class GalDecoder
          
         for (y in 0 ... frame.height) {
             
-			for (x in 0 ... frame.width) {
-    			var colorIndex = input.readByte();
-				layer.imageData.push(colorIndex);
+            for (x in 0 ... frame.width) {
+                var colorIndex = input.readByte();
+                layer.imageData.push(colorIndex);
             }
-			
+            
             if (lineEndSupply > 0) {
-				input.read(lineEndSupply);
-			}
+                input.read(lineEndSupply);
+            }
         }
     }
     
@@ -247,33 +247,33 @@ class GalDecoder
         var y = 0;
         
         while (pos < length && y < frame.height) {
-			value <<= seekBit;
+            value <<= seekBit;
             
-			value += input.readByte();
-			seekBit += 8; // readByte() = read 8bit
-					
-			while (seekBit >= frame.bitDepth) {
-				var shiftMask = mask << (seekBit - frame.bitDepth);
-				
+            value += input.readByte();
+            seekBit += 8; // readByte() = read 8bit
+                    
+            while (seekBit >= frame.bitDepth) {
+                var shiftMask = mask << (seekBit - frame.bitDepth);
+                
                 var colorIndex = (value & shiftMask) >> (seekBit - frame.bitDepth);
                 layer.imageData.push(colorIndex);
                 
-				value &= ~shiftMask;
-				seekBit -= frame.bitDepth;
+                value &= ~shiftMask;
+                seekBit -= frame.bitDepth;
                 
-				x++;
-				
+                x++;
+                
                 // new line
-				if (x >= frame.width) {
-					x = 0;
-					y++;
+                if (x >= frame.width) {
+                    x = 0;
+                    y++;
                     
-					if (pos < length && y < frame.height && lineEndSupply > 0) {
-						input.read(lineEndSupply);
-					}
-				}
-			}
-		}
+                    if (pos < length && y < frame.height && lineEndSupply > 0) {
+                        input.read(lineEndSupply);
+                    }
+                }
+            }
+        }
     }
     
     static function readGaleX200(input:Input, galImage:GalImage)

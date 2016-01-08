@@ -98,9 +98,9 @@ class PngDecoder
     {
         var bytesInput = new BytesInputWrapper(signatureBytes, Endian.BigEndian);
 
-	    if (bytesInput.readInt32() != 0x89504E47 || bytesInput.readInt32() != 0x0D0A1A0A) {
-		    throw Error.InvalidFormat;
-	    }
+        if (bytesInput.readInt32() != 0x89504E47 || bytesInput.readInt32() != 0x0D0A1A0A) {
+            throw Error.InvalidFormat;
+        }
     }
     
     private static function decodeHeader(bytes:Bytes, pngInfo:PngImage)

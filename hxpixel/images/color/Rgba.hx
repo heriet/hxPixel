@@ -34,45 +34,45 @@ abstract Rgba(Int) from Int to Int
     public var green(get, set) : Int;
     public var blue(get, set) : Int;
     
-	inline function get_alpha() : Int
+    inline function get_alpha() : Int
     {
         return (this >> 24) & 0xFF;
-	}
+    }
 
-	inline function set_alpha( alpha : Int ) : Int
+    inline function set_alpha( alpha : Int ) : Int
     {
         return this = ((alpha & 0xFF) << 24) | (this & 0xFFFFFF);
-	}
+    }
     
     inline function get_red():Int
     {
         return (this >> 16) & 0xFF;
     }
     
-	inline function set_red( red : Int ) : Int
+    inline function set_red( red : Int ) : Int
     {
         return this = ((red & 0xFF) << 16) | (this & 0xFF00FFFF);
-	}
+    }
     
     inline function get_green():Int
     {
         return (this >> 8) & 0xFF;
     }
     
-	inline function set_green( green : Int ) : Int
+    inline function set_green( green : Int ) : Int
     {
         return this = ((green & 0xFF) << 8) | (this & 0xFFFF00FF);
-	}
+    }
     
     inline function get_blue():Int
     {
         return this & 0xFF;
     }
     
-	inline function set_blue( blue : Int ) : Int
+    inline function set_blue( blue : Int ) : Int
     {
         return this = (blue & 0xFF) | (this & 0xFFFFFF00);
-	}
+    }
     
     public static function fromComponents( red : Int, green : Int, blue : Int, ?alpha : Int = 0xFF) : Rgba
     {
