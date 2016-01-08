@@ -20,50 +20,14 @@
  * THE SOFTWARE.
  */
 
-package tests;
+package hxpixel.images.file;
 
-import haxe.unit.TestRunner;
-
-import tests.bytes.TestBits;
-
-import tests.images.gif.TestGifDecoder;
-import tests.images.gal.TestGalDecoder;
-import tests.images.edg.TestEdgDecoder;
-import tests.images.psd.TestPsdDecoder;
-
-import tests.images.gif.TestGifEncoder;
-import tests.images.png.TestPngEncoder;
-
-import tests.images.gif.TestGifConverter;
-import tests.images.psd.TestPsdConverter;
-
-import tests.images.utils.TestFileUtils;
-
-class Test
+enum PixelArtFileType 
 {
-
-    static function main() 
-    {
-        var runner = new TestRunner();
-        
-        runner.add(new TestBits());
-        
-        runner.add(new TestGifDecoder());
-        runner.add(new TestGalDecoder());
-        runner.add(new TestEdgDecoder());
-        // runner.add(new TestPngDecoder());
-        runner.add(new TestPsdDecoder());
-        
-        runner.add(new TestGifEncoder());
-        runner.add(new TestPngEncoder());
-        
-        runner.add(new TestGifConverter());
-        runner.add(new TestPsdConverter());
-        
-        runner.add(new TestFileUtils());
-        
-        runner.run();
-        
-    }
-    
+    Edge;
+    Gif;
+    Gale;
+    Png;
+    Psd;
+    Unknown;
 }

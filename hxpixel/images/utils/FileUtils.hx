@@ -20,50 +20,38 @@
  * THE SOFTWARE.
  */
 
-package tests;
+package hxpixel.images.utils;
 
-import haxe.unit.TestRunner;
+import hxpixel.images.file.PixelArtFileType;
 
-import tests.bytes.TestBits;
+import haxe.io.Bytes;
 
-import tests.images.gif.TestGifDecoder;
-import tests.images.gal.TestGalDecoder;
-import tests.images.edg.TestEdgDecoder;
-import tests.images.psd.TestPsdDecoder;
-
-import tests.images.gif.TestGifEncoder;
-import tests.images.png.TestPngEncoder;
-
-import tests.images.gif.TestGifConverter;
-import tests.images.psd.TestPsdConverter;
-
-import tests.images.utils.TestFileUtils;
-
-class Test
+class FileUtils
 {
 
-    static function main() 
+    public static function distinctPixelArtFileType(bytes: Bytes): PixelArtFileType
     {
-        var runner = new TestRunner();
+        var signature = bytes.getInt32(0);
         
-        runner.add(new TestBits());
-        
-        runner.add(new TestGifDecoder());
-        runner.add(new TestGalDecoder());
-        runner.add(new TestEdgDecoder());
-        // runner.add(new TestPngDecoder());
-        runner.add(new TestPsdDecoder());
-        
-        runner.add(new TestGifEncoder());
-        runner.add(new TestPngEncoder());
-        
-        runner.add(new TestGifConverter());
-        runner.add(new TestPsdConverter());
-        
-        runner.add(new TestFileUtils());
-        
-        runner.run();
-        
+        switch(signature) {
+            case 0x45474445: // EDGE
+                return PixelArtFileType.Edge;
+            
+            case 0x656c6147: // Gale
+                return PixelArtFileType.Gale;
+            
+            case 0x38464947: // GIG8
+                return PixelArtFileType.Gif;
+                
+            case 0x474e5089: // \x89PNG
+                return PixelArtFileType.Png;
+            
+            case 0x53504238: // 8BPS
+                return PixelArtFileType.Psd;
+            
+            default:
+                return PixelArtFileType.Unknown;
+        }
     }
     
 }
