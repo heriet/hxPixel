@@ -45,6 +45,7 @@ class EdgImage
     /* Edg Page */
     public var pages: Array<EdgPage>;
     public var numPages(get, never): Int;
+    public var isFullColor(get, never): Bool;
     
     public function new() 
     {
@@ -57,6 +58,11 @@ class EdgImage
     public function get_numPages() : Int
     {
         return pages.length;
+    }
+
+    public function get_isFullColor() : Bool
+    {
+        return bitDepth > 8;
     }
     
     public function getSize() : Array<Int>
