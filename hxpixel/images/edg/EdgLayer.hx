@@ -49,12 +49,21 @@ class EdgLayer
         var rgbaImageData = new Array<Rgba>();
 
         if (parent.parent.isFullColor) {
+            var transparentColor = parent.parent.transparentColor;
             var colorNum = Std.int(imageData.length / 3);
             for (i in 0 ... colorNum) {
                 var blue = imageData[i*3];
                 var green = imageData[i*3+1];
                 var red = imageData[i*3+2];
                 var color = Rgba.fromComponents(red, green, blue);
+                
+                if (
+                    transparentColor.blue == blue
+                    && transparentColor.green == green
+                    && transparentColor.red == red) {
+                    color.alpha = 0;
+                }
+
                 rgbaImageData.push(color);
             }
 

@@ -245,6 +245,9 @@ class EdgDecoder
                 case 1000:
                     if (length != 1) throw Error.InvalidFormat;
                     edgImage.transparentColorIndex = source.readByte();
+                case 1001:
+                    if (length != 3) throw Error.InvalidFormat;
+                    edgImage.transparentColor = ColorUtils.readBgr(source);
                 default:
                     source.read(length);
             }
