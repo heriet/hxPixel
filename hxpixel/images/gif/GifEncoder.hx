@@ -115,13 +115,13 @@ class GifEncoder
         block.bigEndian = false;
         
         var packedFields = 0;
-        packedFields += frame.disposalMothod != null ? frame.disposalMothod << 2 : 0;
+        packedFields += frame.disposalMothod << 2;
         packedFields += frame.userInputFlag ? 0x02 : 0;
         packedFields += frame.transparentColorFlag ? 0x01 : 0;
         block.writeByte(packedFields);
         
-        block.writeUInt16(frame.delayTime != null ? frame.delayTime : 0);
-        block.writeByte(frame.transparentColorIndex != null ? frame.transparentColorIndex : 0);
+        block.writeUInt16(frame.delayTime);
+        block.writeByte(frame.transparentColorIndex);
         
         writeExtension(0xf9, block.getBytes(), output);
     }

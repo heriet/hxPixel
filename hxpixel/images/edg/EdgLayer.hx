@@ -46,10 +46,32 @@ class EdgLayer
     
     public function getRgbaImageData() : Array<Rgba>
     {
-        var rgbaPalette = parent.getRbgaPalette();
         var rgbaImageData = new Array<Rgba>();
-        for (i in 0 ... imageData.length) {
-            rgbaImageData[i] = rgbaPalette[imageData[i]];
+
+        if (parent.parent.isFullColor) {
+            var transparentColor = parent.parent.transparentColor;
+            var colorNum = Std.int(imageData.length / 3);
+            for (i in 0 ... colorNum) {
+                var blue = imageData[i*3];
+                var green = imageData[i*3+1];
+                var red = imageData[i*3+2];
+                var color = Rgba.fromComponents(red, green, blue);
+                
+                if (
+                    transparentColor.blue == blue
+                    && transparentColor.green == green
+                    && transparentColor.red == red) {
+                    color.alpha = 0;
+                }
+
+                rgbaImageData.push(color);
+            }
+
+        } else {
+            var rgbaPalette = parent.getRbgaPalette();
+            for (i in 0 ... imageData.length) {
+                rgbaImageData[i] = rgbaPalette[imageData[i]];
+            }
         }
         
         return rgbaImageData;
